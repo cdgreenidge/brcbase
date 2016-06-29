@@ -18,5 +18,10 @@ BrcParcellation <- function(dim3d, partition=NULL) {
   structure(list(dim3d=dim3d, partition=partition), class="BrcParcellation")
 }
 
-dim3d.BrcParcellation <- function(obj) obj$dim3d
-partition.BrcParcellation <- function(obj) obj$partition
+dim3d.BrcParcellation <- function(obj) {
+  obj$dim3d
+}
+
+partition.BrcParcellation <- function(obj) {
+  obj$partition
+}
