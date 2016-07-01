@@ -23,3 +23,9 @@ test_that("it contains a partition factor", {
   parcellation <- BrcParcellation(dim3d=c(2, 2, 2), partition=part)
   expect_equal(partition(parcellation), part)
 })
+
+test_that("it knows how to check itself for validity", {
+  part <- factor(1:4)
+  parcellation <- BrcParcellation(dim3d=c(2, 2, 2), partition=part)
+  expect_error(isValid(parcellation), "number of 3D voxels")
+})

@@ -12,6 +12,13 @@ dim3d.BrcParcellation <- function(obj) {
   obj$dim3d
 }
 
+isValid.BrcParcellation <- function(obj) {
+  num3dVoxels <- Reduce("*", dim3d(obj))
+  if (length(partition(obj)) != num3dVoxels) {
+    stop("Length of partition not equal to number of 3D voxels.")
+  }
+}
+
 partition.BrcParcellation <- function(obj) {
   obj$partition
 }
