@@ -1,6 +1,8 @@
 BrcFmri <- function(data, parcellation) {
   if (!is.matrix(data)) {
     stop("data argument must be a matrix")
+  } else if (class(parcellation) != "BrcParcellation") {
+    stop("parcellation argument must be of class BrcParcellation")
   }
 
   if (is.null(partition)) {

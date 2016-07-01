@@ -24,3 +24,7 @@ test_that("it contains a parcellation", {
   mri <- BrcFmri(data=mat, parcellation=parcellation)
   expect_equal(parcellation(mri), parcellation)
 })
+
+test_that("parcellation must be of class BrcParcellation", {
+  expect_error(BrcFmri(data=mat, parcellation=character()), "parcellation")
+})
