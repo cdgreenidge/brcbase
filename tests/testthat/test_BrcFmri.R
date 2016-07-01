@@ -28,3 +28,19 @@ test_that("it contains a parcellation", {
 test_that("parcellation must be of class BrcParcellation", {
   expect_error(BrcFmri(data=mat, parcellation=character()), "parcellation")
 })
+
+test_that("it knows how to check itself for validity", {
+  dim3d <- c(2, 1, 2)
+  partition <- factor(1:4)
+  parcellation <- BrcParcellation(dim3d, partition)
+  mri <- BrcFmri(data=mat, parcellation=parcellation)
+  expect_error(isValid(mri), "columns")
+})
+
+test_that("it also checks the parcellation it contains for validity", {
+  dim3d <- c(2, 2, 2)
+  partition <- factor(1:4)
+  parcellation <- BrcParcellation(dim3d, partition)
+  mri <- BrcFmri(data=mat, parcellation=parcellation)
+  expect_error(isValid(mri), "partition")
+})
