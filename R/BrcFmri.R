@@ -5,11 +5,6 @@ BrcFmri <- function(data, parcellation) {
     stop("parcellation argument must be of class BrcParcellation")
   }
 
-  if (is.null(partition)) {
-    num3dVoxels <- Reduce("*", dim3d)
-    partition <- factor(1:num3dVoxels)
-  }
-
   structure(list(data=data, parcellation=parcellation), class="BrcFmri")
 }
 
