@@ -1,5 +1,20 @@
 context("Test buildBrcFmri.R")
 
+mat <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16),
+              nrow=2, ncol=8)
+dim3d <- c(2, 2, 2)
+
+# Test buildBrcFmri()
+test_that("buildBrcFmri builds an fMRI object", {
+  mri <- buildBrcFmri(data2d=mat, dim3d=dim3d, partition=NULL)
+  expect_equal(class(mri), "BrcFmri")
+})
+
+test_that("buildBrcFmri checks the MRI object for validity", {
+  expect_error(buildBrcFmri(data2d=mat, dim3d=c(2, 1, 2), partition=NULL),
+               "columns")
+})
+
 # Test buildParcellation()
 
 test_that("buildParcellation builds a parcellation", {
@@ -19,8 +34,6 @@ test_that("buildParcellation uses the user-supplied partition if it exists", {
 })
 
 # Test buildPartition()
-
-dim3d <- c(2, 2, 2)
 
 test_that("buildPartition uses the user-supplied partition if it exists", {
   userPartition <- factor(c(1, 1, 2, 2, 3, 3, 4, 4))
