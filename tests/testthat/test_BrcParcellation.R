@@ -23,8 +23,3 @@ test_that("it contains a partition factor", {
   parcellation <- BrcParcellation(dim3d=c(2, 2, 2), partition=part)
   expect_equal(partition(parcellation), part)
 })
-
-test_that("the partition must contain an entry for each 3D voxel", {
-  expect_error(BrcParcellation(dim3d=c(2, 2, 2), partition=c(1, 2)),
-               "partition")
-})

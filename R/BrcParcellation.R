@@ -5,11 +5,6 @@ BrcParcellation <- function(dim3d, partition) {
     stop("dim3d argument must be a 3-element numeric vector")
   }
 
-  NUM_3D_VOXELS <- Reduce("*", dim3d)
-  if (length(partition) != NUM_3D_VOXELS) {
-    stop("partition factor length not equal to number of 3D voxels")
-  }
-
   structure(list(dim3d=dim3d, partition=partition), class="BrcParcellation")
 }
 
