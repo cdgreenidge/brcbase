@@ -12,6 +12,10 @@ data.BrcFmri <- function(obj) {
   obj$data
 }
 
+dim4d.BrcFmri <- function(obj) {
+  c(dim3d(parcellation(obj)), nrow(data(obj)))
+}
+
 isValid.BrcFmri <- function(obj) {
   num3dVoxels <- Reduce("*", dim3d(parcellation(obj)))
   if (ncol(data(obj)) != num3dVoxels) {
@@ -26,4 +30,11 @@ isValid.BrcFmri <- function(obj) {
 
 parcellation.BrcFmri <- function(obj) {
   obj$parcellation
+}
+
+summary.BrcFmri <- function(obj) {
+  dims <- dim4d(obj)
+  cat(sprintf("Volume resolution: %d x %d x %d voxels\n", dims[1], dims[2],
+              dims[3]))
+  cat(sprintf("Scan length:       %d volumes\n", dims[4]))
 }

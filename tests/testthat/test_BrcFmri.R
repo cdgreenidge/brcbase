@@ -44,3 +44,8 @@ test_that("it also checks the parcellation it contains for validity", {
   mri <- BrcFmri(data=mat, parcellation=parcellation)
   expect_error(isValid(mri), "partition")
 })
+
+test_that("it can tell you its 4D dimensions", {
+  mri <- BrcFmri(data=mat, parcellation=parcellation)
+  expect_equal(dim4d(mri), c(2, 2, 2, 2))
+})

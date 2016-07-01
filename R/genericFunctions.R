@@ -1,5 +1,6 @@
 data <- function(obj) UseMethod("data")
 dim3d <- function(obj) UseMethod("dim3d")
+dim4d <- function(obj) UseMethod("dim4d")
 isValid <- function(obj) UseMethod("isValid")
 parcellation <- function(obj) UseMethod("parcellation")
 partition <- function(obj) UseMethod("partition")
