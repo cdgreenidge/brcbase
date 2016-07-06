@@ -5,6 +5,7 @@ mat <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16),
 dim3d <- c(2, 2, 2)
 
 # Test buildBrcFmri()
+
 test_that("buildBrcFmri builds an fMRI object", {
   mri <- buildBrcFmri(data2d=mat, dim3d=dim3d, id="", partition=NULL)
   expect_equal(class(mri), "BrcFmri")
