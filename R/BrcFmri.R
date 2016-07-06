@@ -37,7 +37,7 @@ parcellation.BrcFmri <- function(obj) {
   obj$parcellation
 }
 
-summary.BrcFmri <- function(object) {
+summary.BrcFmri <- function(object, ...) {
   dims <- dim4d(object)
   cat(sprintf("Id:                %s\n", id(object)))
   cat(sprintf("Volume resolution: %d x %d x %d voxels\n", dims[1], dims[2],
