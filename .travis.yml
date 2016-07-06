@@ -3,13 +3,8 @@ language: r
 cache: packages
 
 r_binary_packages:
-    - devtools
     - oro.nifti
-    - testthat
-    - roxygen2
-
-r_packages:
-  - covr
+    - covr
 
 after_success:
   - Rscript -e 'library(covr); codecov()'
