@@ -5,7 +5,7 @@ niftiToBrcFmri <- function(file, id=NULL) {
 
   nifti <- oro.nifti::readNIfTI(file)
   mat2d <- data4dTo2d(nifti@.Data)
-  buildBrcFmri(data=mat2d, dim3d=dim(nifti)[-4], id=id, partition=NULL)
+  buildBrcFmri(data2d=mat2d, dim3d=dim(nifti)[-4], id=id, partition=NULL)
 }
 
 data2dTo4d <- function(mat2d, parcellation) {
