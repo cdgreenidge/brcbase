@@ -24,6 +24,16 @@ test_that("it contains a partition factor", {
   expect_equal(partition(parcellation), part)
 })
 
+test_that("the partition must be a factor", {
+  expect_error(BrcParcellation(dim3d=c(2, 2, 2), partition=character()),
+               "factor")
+})
+
+test_that("the partition must have levels >= 0", {
+  part <- factor(-1:6)
+  expect_error(BrcParcellation(dim3d=c(2, 2, 2), partition=part), "factor")
+})
+
 test_that("it knows how to check itself for validity", {
   part <- factor(1:4)
   parcellation <- BrcParcellation(dim3d=c(2, 2, 2), partition=part)
