@@ -42,6 +42,14 @@ test_that("it knows how to check itself for validity", {
   expect_error(isValid(mri), "columns")
 })
 
+test_that("0 values in the partition are allowed", {
+  mat <- matrix(data=c(1, 2, 3, 4, 5, 6, 7, 8), nrow=2, ncol=4)
+  partition <- factor(c(0, 1, 2, 2, 3, 3, 4, 0))
+  parcellation <- BrcParcellation(dim3d=c(2, 2, 2), partition)
+  mri <- BrcFmri(data=mat, id="01", parcellation=parcellation)
+  expect_error(isValid(mri), NA)
+})
+
 test_that("it also checks the parcellation it contains for validity", {
   dim3d <- c(2, 2, 2)
   partition <- factor(1:4)

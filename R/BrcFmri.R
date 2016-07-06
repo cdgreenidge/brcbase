@@ -21,7 +21,8 @@ id.BrcFmri <- function(obj) {
 }
 
 isValid.BrcFmri <- function(obj) {
-  num3dVoxels <- Reduce("*", dim3d(parcellation(obj)))
+  partition <- partition(parcellation(obj))
+  num3dVoxels <- sum(levels(partition) > 0)
   if (ncol(data(obj)) != num3dVoxels) {
     stop(paste("Number of columns in data matrix does not equal number of 3D",
                "voxels specified in the parcellation. If you used the default",
