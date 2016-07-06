@@ -1,7 +1,11 @@
-niftiToBrcFmri <- function(file) {
+niftiToBrcFmri <- function(file, id=NULL) {
+  if (is.null(id)) {
+    id <- file
+  }
+
   nifti <- oro.nifti::readNIfTI(file)
   mat2d <- data4dTo2d(nifti@.Data)
-  buildBrcFmri(data=mat2d, dim3d=dim(nifti)[-4], partition=NULL)
+  buildBrcFmri(data=mat2d, dim3d=dim(nifti)[-4], id=id, partition=NULL)
 }
 
 data4dTo2d <- function(arr4d) {
