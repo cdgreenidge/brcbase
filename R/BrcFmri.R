@@ -1,11 +1,11 @@
-BrcFmri <- function(data, parcellation) {
+BrcFmri <- function(data, id, parcellation) {
   if (!is.matrix(data)) {
     stop("data argument must be a matrix")
   } else if (class(parcellation) != "BrcParcellation") {
     stop("parcellation argument must be of class BrcParcellation")
   }
 
-  structure(list(data=data, parcellation=parcellation), class="BrcFmri")
+  structure(list(data=data, id=id, parcellation=parcellation), class="BrcFmri")
 }
 
 data.BrcFmri <- function(obj) {
@@ -14,6 +14,10 @@ data.BrcFmri <- function(obj) {
 
 dim4d.BrcFmri <- function(obj) {
   c(dim3d(parcellation(obj)), nrow(data(obj)))
+}
+
+id.BrcFmri <- function(obj) {
+  obj$id
 }
 
 isValid.BrcFmri <- function(obj) {
@@ -34,6 +38,7 @@ parcellation.BrcFmri <- function(obj) {
 
 summary.BrcFmri <- function(obj) {
   dims <- dim4d(obj)
+  cat(sprintf("Id:                %s\n", id(obj)))
   cat(sprintf("Volume resolution: %d x %d x %d voxels\n", dims[1], dims[2],
               dims[3]))
   cat(sprintf("Scan length:       %d volumes\n", dims[4]))
