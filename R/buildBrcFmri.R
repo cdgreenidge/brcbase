@@ -1,6 +1,6 @@
 buildBrcFmri <- function(data2d, dim3d, id="", partition=NULL) {
   parcellation <- buildParcellation(dim3d=dim3d, userPartition=partition)
-  mri <- BrcFmri(data=data2d, id=id, parcellation=parcellation)
+  mri <- BrcFmri(data2d=data2d, id=id, parcellation=parcellation)
   isValid(mri)
   mri
 }

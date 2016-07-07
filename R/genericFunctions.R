@@ -1,4 +1,4 @@
-data <- function(obj) UseMethod("data")
+data2d <- function(obj) UseMethod("data2d")
 dim3d <- function(obj) UseMethod("dim3d")
 dim4d <- function(obj) UseMethod("dim4d")
 id <- function(obj) UseMethod("id")

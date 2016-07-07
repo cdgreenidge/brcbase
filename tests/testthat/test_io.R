@@ -5,7 +5,7 @@ test_that("you can construct a BrcFmri object from a NIFTI file", {
   mri <- niftiToBrcFmri(file=path, id="5002_ABIDE")
   nifti <- oro.nifti::readNIfTI(path)
   expect_equal(dim4d(mri), c(4, 5, 4, 3))
-  expect_equal(data(mri), data4dTo2d(nifti@.Data))
+  expect_equal(data2d(mri), data4dTo2d(nifti@.Data))
   expect_equal(id(mri), "5002_ABIDE")
 })
 

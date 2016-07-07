@@ -1,19 +1,20 @@
-BrcFmri <- function(data, id, parcellation) {
-  if (!is.matrix(data)) {
-    stop("data argument must be a matrix")
+BrcFmri <- function(data2d, id, parcellation) {
+  if (!is.matrix(data2d)) {
+    stop("data2d argument must be a matrix")
   } else if (class(parcellation) != "BrcParcellation") {
     stop("parcellation argument must be of class BrcParcellation")
   }
 
-  structure(list(data=data, id=id, parcellation=parcellation), class="BrcFmri")
+  structure(list(data2d=data2d, id=id, parcellation=parcellation),
+            class="BrcFmri")
 }
 
-data.BrcFmri <- function(obj) {
-  obj$data
+data2d.BrcFmri <- function(obj) {
+  obj$data2d
 }
 
 dim4d.BrcFmri <- function(obj) {
-  c(dim3d(parcellation(obj)), nrow(data(obj)))
+  c(dim3d(parcellation(obj)), nrow(data2d(obj)))
 }
 
 id.BrcFmri <- function(obj) {
@@ -23,7 +24,7 @@ id.BrcFmri <- function(obj) {
 isValid.BrcFmri <- function(obj) {
   partition <- partition(parcellation(obj))
   num3dVoxels <- sum(levels(partition) > 0)
-  if (ncol(data(obj)) != num3dVoxels) {
+  if (ncol(data2d(obj)) != num3dVoxels) {
     stop(paste("Number of columns in data matrix does not equal number of 3D",
                "voxels specified in the parcellation. If you used the default",
                "partition, this could be caused by an incorrect dim3d argument",
