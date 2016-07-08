@@ -10,11 +10,11 @@ BrcFmri <- function(data2d, id, parcellation) {
 }
 
 dim4d.BrcFmri <- function(obj) {
-  c(dim3d(parcellation(obj)), nrow(obj$data2d))
+  c(dim3d(obj$parcellation), nrow(obj$data2d))
 }
 
 isValid.BrcFmri <- function(obj) {
-  partition <- partition(parcellation(obj))
+  partition <- partition(obj$parcellation)
   num3dVoxels <- sum(levels(partition) > 0)
   if (ncol(obj$data2d) != num3dVoxels) {
     stop(paste("Number of columns in data matrix does not equal number of 3D",
@@ -23,11 +23,7 @@ isValid.BrcFmri <- function(obj) {
                "passed to buildBrcFmri()."))
 
   }
-  isValid(parcellation(obj))
-}
-
-parcellation.BrcFmri <- function(obj) {
-  obj$parcellation
+  isValid(obj$parcellation)
 }
 
 summary.BrcFmri <- function(object, ...) {

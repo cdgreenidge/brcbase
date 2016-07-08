@@ -22,7 +22,7 @@ test_that("data must be a matrix", {
 
 test_that("it contains a parcellation", {
   mri <- BrcFmri(data2d=mat, id="01", parcellation=parcellation)
-  expect_equal(parcellation(mri), parcellation)
+  expect_equal(mri$parcellation, parcellation)
 })
 
 test_that("parcellation must be of class BrcParcellation", {
