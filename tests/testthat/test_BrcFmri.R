@@ -31,7 +31,7 @@ test_that("parcellation must be of class BrcParcellation", {
 
 test_that("it contains an ID string", {
   mri <- BrcFmri(data2d=mat, id="ABIDE_5002", parcellation=parcellation)
-  expect_equal(id(mri), "ABIDE_5002")
+  expect_equal(mri$id, "ABIDE_5002")
 })
 
 test_that("it knows how to check itself for validity", {

@@ -6,13 +6,13 @@ test_that("you can construct a BrcFmri object from a NIFTI file", {
   nifti <- oro.nifti::readNIfTI(path)
   expect_equal(dim4d(mri), c(4, 5, 4, 3))
   expect_equal(mri$data2d, data4dTo2d(nifti@.Data))
-  expect_equal(id(mri), "5002_ABIDE")
+  expect_equal(mri$id, "5002_ABIDE")
 })
 
 test_that("the default ID is the file path", {
   path <- "../assets/5002_ABIDE_segment.nii.gz"
   mri <- niftiToBrcFmri(file=path)
-  expect_equal(id(mri), path)
+  expect_equal(mri$id, path)
 })
 
 test_that("youc an convert a 2D data matrix to a 4D data matrix", {

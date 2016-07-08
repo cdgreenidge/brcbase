@@ -13,10 +13,6 @@ dim4d.BrcFmri <- function(obj) {
   c(dim3d(parcellation(obj)), nrow(obj$data2d))
 }
 
-id.BrcFmri <- function(obj) {
-  obj$id
-}
-
 isValid.BrcFmri <- function(obj) {
   partition <- partition(parcellation(obj))
   num3dVoxels <- sum(levels(partition) > 0)
