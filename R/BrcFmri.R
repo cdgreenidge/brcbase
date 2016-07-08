@@ -14,7 +14,7 @@ dim4d.BrcFmri <- function(obj) {
 }
 
 isValid.BrcFmri <- function(obj) {
-  partition <- partition(obj$parcellation)
+  partition <- obj$parcellation$partition
   num3dVoxels <- sum(levels(partition) > 0)
   if (ncol(obj$data2d) != num3dVoxels) {
     stop(paste("Number of columns in data matrix does not equal number of 3D",

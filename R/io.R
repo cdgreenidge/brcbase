@@ -9,7 +9,7 @@ niftiToBrcFmri <- function(file, id=NULL) {
 }
 
 data2dTo4d <- function(mat2d, parcellation) {
-  part <- partition(parcellation)
+  part <- parcellation$partition
   expandedMatrix <- .expandMatrix(mat2d, part)
   array(data=t(expandedMatrix), dim=c(parcellation$dim3d, nrow(mat2d)))
 }

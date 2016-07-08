@@ -22,7 +22,7 @@ test_that("buildParcellation builds a parcellation", {
   parcellation <- buildParcellation(dim3d=c(2, 2, 2), userPartition=NULL)
   expect_equal(class(parcellation), "BrcParcellation")
   expect_equal(parcellation$dim3d, c(2, 2, 2))
-  expect_equal(partition(parcellation), factor(1:8))
+  expect_equal(parcellation$partition, factor(1:8))
 })
 
 test_that("buildParcellation uses the user-supplied partition if it exists", {
@@ -31,7 +31,7 @@ test_that("buildParcellation uses the user-supplied partition if it exists", {
                                     userPartition=userPartition)
   expect_equal(class(parcellation), "BrcParcellation")
   expect_equal(parcellation$dim3d, c(2, 2, 2))
-  expect_equal(partition(parcellation), userPartition)
+  expect_equal(parcellation$partition, userPartition)
 })
 
 # Test buildPartition()
