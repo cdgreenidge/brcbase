@@ -13,7 +13,7 @@ test_that("the constructor returns an object of class BrcFmri", {
 
 test_that("it contains a 2D data matrix", {
   mri <- BrcFmri(data2d=mat, id="01", parcellation=parcellation)
-  expect_equal(data2d(mri), mat)
+  expect_equal(mri$data2d, mat)
 })
 
 test_that("data must be a matrix", {
