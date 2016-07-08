@@ -11,7 +11,7 @@ niftiToBrcFmri <- function(file, id=NULL) {
 data2dTo4d <- function(mat2d, parcellation) {
   part <- partition(parcellation)
   expandedMatrix <- .expandMatrix(mat2d, part)
-  array(data=t(expandedMatrix), dim=c(dim3d(parcellation), nrow(mat2d)))
+  array(data=t(expandedMatrix), dim=c(parcellation$dim3d, nrow(mat2d)))
 }
 
 data4dTo2d <- function(arr4d) {

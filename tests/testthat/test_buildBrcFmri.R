@@ -21,7 +21,7 @@ test_that("buildBrcFmri checks the MRI object for validity", {
 test_that("buildParcellation builds a parcellation", {
   parcellation <- buildParcellation(dim3d=c(2, 2, 2), userPartition=NULL)
   expect_equal(class(parcellation), "BrcParcellation")
-  expect_equal(dim3d(parcellation), c(2, 2, 2))
+  expect_equal(parcellation$dim3d, c(2, 2, 2))
   expect_equal(partition(parcellation), factor(1:8))
 })
 
@@ -30,7 +30,7 @@ test_that("buildParcellation uses the user-supplied partition if it exists", {
   parcellation <- buildParcellation(dim3d=c(2, 2, 2),
                                     userPartition=userPartition)
   expect_equal(class(parcellation), "BrcParcellation")
-  expect_equal(dim3d(parcellation), c(2, 2, 2))
+  expect_equal(parcellation$dim3d, c(2, 2, 2))
   expect_equal(partition(parcellation), userPartition)
 })
 

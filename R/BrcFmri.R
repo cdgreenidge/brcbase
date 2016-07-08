@@ -10,7 +10,7 @@ BrcFmri <- function(data2d, id, parcellation) {
 }
 
 dim4d.BrcFmri <- function(obj) {
-  c(dim3d(obj$parcellation), nrow(obj$data2d))
+  c(obj$parcellation$dim3d, nrow(obj$data2d))
 }
 
 isValid.BrcFmri <- function(obj) {
@@ -28,7 +28,7 @@ isValid.BrcFmri <- function(obj) {
 
 summary.BrcFmri <- function(object, ...) {
   dims <- dim4d(object)
-  cat(sprintf("Id:                %s\n", id(object)))
+  cat(sprintf("Id:                %s\n", object$id))
   cat(sprintf("Volume resolution: %d x %d x %d voxels\n", dims[1], dims[2],
               dims[3]))
   cat(sprintf("Scan length:       %d volumes\n", dims[4]))
