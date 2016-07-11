@@ -73,6 +73,7 @@ dim4d <- function(mri) {
 #' 
 #' @param  obj  The \code{BrcFmri} instance to check
 #' @return void
+#' @export
 isValid.BrcFmri <- function(obj) {
   partition <- obj$parcellation$partition
   num3dVoxels <- sum(levels(partition) > 0)
@@ -92,6 +93,7 @@ isValid.BrcFmri <- function(obj) {
 #' 
 #' @param object a BrcFmri instance
 #' @param ... unused
+#' @export
 summary.BrcFmri <- function(object, ...) {
   dims <- dim4d(object)
   cat(sprintf("Id:                %s\n", object$id))

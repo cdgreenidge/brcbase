@@ -46,6 +46,7 @@ data2dTo4d <- function(mat2d, parcellation) {
 #' 
 #' @param arr4d the 4D array containing the series of fMRI volumes
 #' @return a 2D fMRI data matrix
+#' @export
 data4dTo2d <- function(arr4d) {
   num3dVoxels <- Reduce("*", dim(arr4d)[-4])
   scanLength <- dim(arr4d)[4]

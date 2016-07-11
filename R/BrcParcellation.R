@@ -57,6 +57,7 @@ BrcParcellation <- function(dim3d, partition) {
 #' 
 #' @param  obj  The \code{BrcParcellation} instance to check
 #' @return void
+#' @export
 isValid.BrcParcellation <- function(obj) {
   num3dVoxels <- Reduce("*", obj$dim3d)
   if (length(obj$partition) != num3dVoxels) {
