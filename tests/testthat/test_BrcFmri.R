@@ -62,3 +62,7 @@ test_that("it can tell you its 4D dimensions", {
   mri <- BrcFmri(data2d=mat, id="01", parcellation=parcellation)
   expect_equal(dim4d(mri), c(2, 2, 2, 2))
 })
+
+test_that("dim4d checks if its object is a BrcFmri object", {
+  expect_error(dim4d(character()), "BrcFmri")   
+})

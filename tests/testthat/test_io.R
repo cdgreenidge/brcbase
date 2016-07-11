@@ -2,7 +2,7 @@ context("Test io.R")
 
 test_that("you can construct a BrcFmri object from a NIFTI file", {
   path <- "../assets/5002_ABIDE_segment.nii.gz"
-  mri <- niftiToBrcFmri(file=path, id="5002_ABIDE")
+  mri <- readNifti(file=path, id="5002_ABIDE")
   nifti <- oro.nifti::readNIfTI(path)
   expect_equal(dim4d(mri), c(4, 5, 4, 3))
   expect_equal(mri$data2d, data4dTo2d(nifti@.Data))
@@ -11,7 +11,7 @@ test_that("you can construct a BrcFmri object from a NIFTI file", {
 
 test_that("the default ID is the file path", {
   path <- "../assets/5002_ABIDE_segment.nii.gz"
-  mri <- niftiToBrcFmri(file=path)
+  mri <- readNifti(file=path)
   expect_equal(mri$id, path)
 })
 
