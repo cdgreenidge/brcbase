@@ -7,7 +7,7 @@ test_that("the constructor returns an object of class BrcParcellation", {
 
 test_that("it contains a 3-element dimension vector", {
   parcellation <- BrcParcellation(dim3d=c(2, 2, 2), factor(1:8))
-  expect_equal(dim3d(parcellation), c(2, 2, 2))
+  expect_equal(parcellation$dim3d, c(2, 2, 2))
 })
 
 test_that("dim3d must be a numeric vector", {
@@ -21,7 +21,7 @@ test_that("dim3d must be 3 elements long", {
 test_that("it contains a partition factor", {
   part <- factor(1:8)
   parcellation <- BrcParcellation(dim3d=c(2, 2, 2), partition=part)
-  expect_equal(partition(parcellation), part)
+  expect_equal(parcellation$partition, part)
 })
 
 test_that("the partition must be a factor", {

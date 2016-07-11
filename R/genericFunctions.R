@@ -1,7 +1,9 @@
-data <- function(obj) UseMethod("data")
-dim3d <- function(obj) UseMethod("dim3d")
-dim4d <- function(obj) UseMethod("dim4d")
-id <- function(obj) UseMethod("id")
+#' Checks S3 object validity
+#' 
+#' Generic function that fails noisily with a stop message if the object is 
+#' invalid. Otherwise, nothing happens.
+#' 
+#' @param  obj  The object to check
+#' @return void
+#' @export
 isValid <- function(obj) UseMethod("isValid")
-parcellation <- function(obj) UseMethod("parcellation")
-partition <- function(obj) UseMethod("partition")
