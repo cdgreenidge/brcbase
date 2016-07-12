@@ -1,4 +1,4 @@
 library(testthat)
-library(brco)
+library(brcbase)
 
-test_check("brco")
+test_check("brcbase")
