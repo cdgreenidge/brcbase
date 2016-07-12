@@ -1,4 +1,4 @@
-Package: brco
+Package: brcbase
 Title: What the Package Does (one line, title case)
 Version: 0.0.0.9000
 Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
@@ -13,3 +13,4 @@ Imports:
 Suggests:
     testthat
 RoxygenNote: 5.0.1
+VignetteBuilder: knitr
