@@ -19,3 +19,14 @@ reduce_pca <- function(mat){
   stats::prcomp(mat, center = T, scale. = T)$x[,1]
 }
 
+.isValid_reduction <- function(x, y){
+  if(class(x) != "BrcFmri") stop("x must be class BrcFmri")
+  if(class(y) != "BrcParcellation") stop("y must be class BrcParcellation")
+  
+  if(!all(x$parcellation$dim3d == y$dim3d)) stop("x and y must have the same dim3d")
+  
+  if(!isValid(x)) stop("x must be a valid BrcFmri. Try isValid(x)")
+  if(!isValid(y)) stop("y must be a valid BrcFmri. Try isValid(y)")
+  
+  TRUE
+}

@@ -55,3 +55,34 @@ test_that("it can handle matrix with no columns", {
 
 ## test .isValid_reduction()
 
+set.seed(10)
+mat <- matrix(1:16, nrow=2, ncol=8)
+mri <- BrcFmri(data2d = mat, id = "01", 
+  parcellation = BrcParcellation(c(2,2,2), 1:8))
+
+parcellation <- BrcParcellation(c(2,2,2), rbinom(8,1,0.5))
+
+mat.big <- matrix(5, nrow = 2, ncol = 27)
+mri.big <- BrcFmri(data2d = mat.big, id = "02", 
+  parcellation = BrcParcellation(c(3,3,3), 1:27))
+
+test_that("it errors when fmri and parcellation don't match in dimension", {
+  expect_error(.isValid_reduction(mri, mri.big$parcellation))
+})
+
+test_that("works as normal", {
+  expect_true(.isValid_reduction(mri, mri$parcellation))
+  expect_true(.isValid_reduction(mri, parcellation))
+})
+
+test_that("errors if mri is not valid", {
+  mri.fake <- mri
+  mri.fake$data2d <- mri.fake$data2d[,1:7]
+  expect_error(.isValid_reduction(mri.fake, parcellation))
+})
+
+test_that("errors if parcellation is not valid", {
+  parcellation.fake <- parcellation
+  parcellation.fake$dim3d <- c(3,2,2)
+  expect_error(.isValid_reduction(mri, parcellation.fake))
+})
