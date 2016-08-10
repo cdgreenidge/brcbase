@@ -1,5 +1,15 @@
 context("Test reduce.BrcFmri.R")
 
+mat <- matrix(1:8, nrow=2, ncol=4)
+mri <- BrcFmri(data2d = mat, id = "01",
+  parcellation = BrcParcellation(c(2,2,2), c(0,0,1,1,2,2,3,4)))
+
+mat2 <- matrix(1:4, nrow=1, ncol=8)
+mri2 <- BrcFmri(data2d = mat, id = "02",
+               parcellation = BrcParcellation(c(2,2,2), c(0,0,1,1,2,2,3,4)))
+
+parcellation <- BrcParcellation(c(2,2,2), c(0,0,1,1,1,1,2,2))
+
 ## test reduce_mean()
 
 test_that("it computes the correct mean", {
@@ -55,18 +65,11 @@ test_that("it can handle matrix with no columns", {
 
 ## test .isValid_reduction()
 
-set.seed(10)
-mat <- matrix(1:16, nrow=2, ncol=8)
-mri <- BrcFmri(data2d = mat, id = "01", 
-  parcellation = BrcParcellation(c(2,2,2), 1:8))
-
-parcellation <- BrcParcellation(c(2,2,2), rbinom(8,1,0.5))
-
-mat.big <- matrix(5, nrow = 2, ncol = 27)
-mri.big <- BrcFmri(data2d = mat.big, id = "02", 
-  parcellation = BrcParcellation(c(3,3,3), 1:27))
-
 test_that("it errors when fmri and parcellation don't match in dimension", {
+  mat.big <- matrix(5, nrow = 2, ncol = 27)
+  mri.big <- BrcFmri(data2d = mat.big, id = "03", 
+                     parcellation = BrcParcellation(c(3,3,3), 1:27))
+  
   expect_error(.isValid_reduction(mri, mri.big$parcellation))
 })
 
@@ -77,7 +80,7 @@ test_that("works as normal", {
 
 test_that("errors if mri is not valid", {
   mri.fake <- mri
-  mri.fake$data2d <- mri.fake$data2d[,1:7]
+  mri.fake$data2d <- mri.fake$data2d[,1:3]
   expect_error(.isValid_reduction(mri.fake, parcellation))
 })
 
@@ -85,4 +88,29 @@ test_that("errors if parcellation is not valid", {
   parcellation.fake <- parcellation
   parcellation.fake$dim3d <- c(3,2,2)
   expect_error(.isValid_reduction(mri, parcellation.fake))
+})
+
+########################
+
+## test .reduceFmritoParcellation()
+
+test_that("it returns a matrix", {
+  expect_true(is.matrix(.reduceFmritoParcellation(mri, parcellation, 
+    reduce_mean)))
+})
+
+test_that("it returns a matrix even when the parcellation is one partition", {
+  parcellation2 <- BrcParcellation(c(2,2,2), rep(1,8))
+  
+  expect_true(is.matrix(.reduceFmritoParcellation(mri, parcellation2, 
+    reduce_mean)))
+})
+
+test_that("it turns a vector of 0's when there is no overlap", {
+  parcellation2 <- BrcParcellation(c(2,2,2), c(1,1,0,0,0,0,0,0))
+  res <- .reduceFmritoParcellation(mri, parcellation2, reduce_mean)
+  
+  expect_true(is.matrix(res))
+  expect_true(length(res) == 2)
+  expect_true(all(res == 0))
 })
