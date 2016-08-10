@@ -44,6 +44,8 @@ reduce_pca <- function(mat){
     func(x$data2d[,col.x,drop=FALSE])
   })
   
+  if(nrow(x$data2d) == 1) mat <- matrix(mat, ncol = length(mat))
+  
   if(!is.matrix(mat)) stop("func used has corrupted the reduction. Please check the
                           func.")
   

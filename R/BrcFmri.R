@@ -42,8 +42,11 @@ BrcFmri <- function(data2d, id, parcellation) {
     stop("parcellation argument must be of class BrcParcellation")
   }
 
-  structure(list(data2d=data2d, id=id, parcellation=parcellation),
+  obj <- structure(list(data2d=data2d, id=id, parcellation=parcellation),
             class="BrcFmri")
+  isValid(obj)
+  
+  obj
 }
 
 #' 4D fMRI dimensions

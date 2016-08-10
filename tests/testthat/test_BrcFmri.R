@@ -38,8 +38,16 @@ test_that("it knows how to check itself for validity", {
   dim3d <- c(2, 1, 2)
   partition <- 1:4
   parcellation <- BrcParcellation(dim3d, partition)
-  mri <- BrcFmri(data2d=mat, id="01", parcellation=parcellation)
-  expect_error(isValid(mri), "columns")
+  expect_error(isValid(BrcFmri(data2d=mat, id="01", 
+    parcellation=parcellation)), "columns")
+})
+
+test_that("it knows how to check itself for validity", {
+  dim3d <- c(2, 2, 2)
+  partition <- 1:8
+  parcellation <- BrcParcellation(dim3d, partition)
+  obj <- BrcFmri(data2d=mat, id="01", parcellation=parcellation)
+  expect_true(isValid(obj))
 })
 
 test_that("0 values in the partition are allowed", {
@@ -64,4 +72,10 @@ test_that("it can tell you its 4D dimensions", {
 
 test_that("dim4d checks if its object is a BrcFmri object", {
   expect_error(dim4d(character()), "BrcFmri")   
+})
+
+test_that("errors if data2d and parcellation don't match in columns",{
+  mat2 <- matrix(1:4, nrow=1, ncol=8)
+  expect_error(BrcFmri(data2d = mat2, id = "02",
+                  parcellation = BrcParcellation(c(2,2,2), c(0,0,1,1,2,2,3,4))))
 })

@@ -4,8 +4,8 @@ mat <- matrix(1:8, nrow=2, ncol=4)
 mri <- BrcFmri(data2d = mat, id = "01",
   parcellation = BrcParcellation(c(2,2,2), c(0,0,1,1,2,2,3,4)))
 
-mat2 <- matrix(1:4, nrow=1, ncol=8)
-mri2 <- BrcFmri(data2d = mat, id = "02",
+mat2 <- matrix(1:4, nrow=1, ncol=4)
+mri2 <- BrcFmri(data2d = mat2, id = "02",
                parcellation = BrcParcellation(c(2,2,2), c(0,0,1,1,2,2,3,4)))
 
 parcellation <- BrcParcellation(c(2,2,2), c(0,0,1,1,1,1,2,2))
@@ -114,3 +114,18 @@ test_that("it turns a vector of 0's when there is no overlap", {
   expect_true(length(res) == 2)
   expect_true(all(res == 0))
 })
+
+test_that("it returns a matrix for 1-time series fmri, 2 partitions", {
+  parcellation2 <- BrcParcellation(c(2,2,2), c(rep(1,4), rep(2,4)))
+  
+  expect_true(is.matrix(.reduceFmritoParcellation(mri2, parcellation2, 
+                                                  reduce_mean)))
+})
+
+test_that("it returns a matrix for 1-time series fmri, 1 partition", {
+  parcellation2 <- BrcParcellation(c(2,2,2), rep(1,8))
+  
+  expect_true(is.matrix(.reduceFmritoParcellation(mri2, parcellation2, 
+                                                  reduce_mean)))
+})
+
