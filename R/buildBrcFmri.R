@@ -29,7 +29,7 @@ buildBrcFmri <- function(data2d, dim3d, id="", partition=NULL) {
 .buildPartition <- function(dim3d, userPartition) {
   if (is.null(userPartition)) {
     num3dVoxels <- Reduce("*", dim3d)
-    return(factor(1:num3dVoxels))
+    return(1:num3dVoxels)
   } else {
     return(userPartition)
   }

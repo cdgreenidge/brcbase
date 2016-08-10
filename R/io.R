@@ -54,8 +54,6 @@ data4dTo2d <- function(arr4d) {
 }
 
 .expandMatrix <- function(mat2d, partition) {
-  partition <- .factorToNumeric(partition)
-
   compressedIndices <- partition[partition != 0]
   expandedIndices <- (1:length(partition))[partition != 0]
 
