@@ -129,3 +129,30 @@ test_that("it returns a matrix for 1-time series fmri, 1 partition", {
                                                   reduce_mean)))
 })
 
+test_that("it returns a matrix for 1-time series, no overlap", {
+  parcellation2 <- BrcParcellation(c(2,2,2), c(1,1,0,0,0,0,0,0))
+  res <- .reduceFmritoParcellation(mri2, parcellation2, reduce_mean)
+  
+  expect_true(is.matrix(res))
+  expect_true(length(res) == 1)
+  expect_true(all(res == 0))
+})
+
+test_that("it returns a column of all 0's if no overlap", {
+  parcellation2 <- BrcParcellation(c(2,2,2), c(1,2,0,0,3,3,3,3))
+  res <- .reduceFmritoParcellation(mri, parcellation2, reduce_mean)
+  
+  expect_true(all(res[,1:2] == 0))
+})
+
+test_that("it does not apply func to empty voxels", {
+  parcellation2 <- BrcParcellation(c(2,2,2), c(1,2,0,0,2,2,2,2))
+  res <- .reduceFmritoParcellation(mri, parcellation2, reduce_mean)
+  
+  expect_true(all(res[,2] == c(mean(c(3,3,5,7)), mean(c(4,4,6,8)))))
+})
+
+test_that("it errors when passed a bad function", {
+  parcellation2 <- BrcParcellation(c(2,2,2), c(1,1,0,0,0,0,0,0))
+  expect_error(.reduceFmritoParcellation(mri, parcellation2, mean))
+})

@@ -41,6 +41,7 @@ reduce_pca <- function(mat){
   mat <- sapply(parcel, function(i){
     idx <- which(y$partition == i)
     col.x <- x$parcellation$partition[idx]
+    col.x <- col.x[col.x != 0]
     func(x$data2d[,col.x,drop=FALSE])
   })
   
