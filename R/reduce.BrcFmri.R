@@ -1,6 +1,12 @@
 reduce <- function(x, ...) {UseMethod("reduce")}
 
 reduce.BrcFmri <- function(x, y, func = reduce_mean){
+  .isValid_reduction(x,y)
+  
+  mat <- .reduceFmritoParcellation(x, y, func)
+  
+  structure(list(data2d = mat, id = x$id, parcellation = y),
+            class = "BrcFmri")
 }
 
 reduce_mean <- function(mat){

@@ -156,3 +156,12 @@ test_that("it errors when passed a bad function", {
   parcellation2 <- BrcParcellation(c(2,2,2), c(1,1,0,0,0,0,0,0))
   expect_error(.reduceFmritoParcellation(mri, parcellation2, mean))
 })
+
+########################
+
+## test reduce.BrcFmri()
+
+test_that("it returns a valid BrcFmri", {
+  res <- reduce.BrcFmri(mri, parcellation)
+  expect_true(isValid(res))
+})
