@@ -63,4 +63,15 @@ isValid.BrcParcellation <- function(obj) {
   if (length(obj$partition) != num3dVoxels) {
     stop("Length of partition not equal to number of 3D voxels.")
   }
+  
+  TRUE
+}
+
+.isValid_partition <- function(partition) {
+  if(!all(partition >= 0)) stop("partition must be all non-negative integers")
+  if(!all(diff(sort(unique(partition))) == 1)) stop("partition must be consecutive integers")
+  if(!(all(partition %%1 == 0))) stop("partition all must be non-negative integers")
+  if(all(partition == 0)) stop("partition must have at least one positive integer")
+  
+  TRUE
 }

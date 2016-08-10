@@ -39,3 +39,37 @@ test_that("it knows how to check itself for validity", {
   parcellation <- BrcParcellation(dim3d=c(2, 2, 2), partition=part)
   expect_error(isValid(parcellation), "number of 3D voxels")
 })
+
+
+######
+
+## test .isValid_partition
+
+test_that("it errors when there are negative values", {
+  expect_error(.isValid_partition(-1:5))
+})
+
+test_that("it errors when the values are not consecutive", {
+  expect_error(.isValid_partition(c(1:10,15)))
+})
+
+test_that("it errors when the values are decimal", {
+  expect_error(.isValid_partition(1.1))
+  expect_error(.isValid_partition(c(1:10)+.1))
+})
+
+test_that("it errors when all the values are 0", {
+  expect_error(.isValid_partition(0))
+  expect_error(.isValid_partition(rep(0,10)))
+})
+
+test_that("it works as expected on valid partitions", {
+  expect_true(.isValid_partition(1:100))
+  expect_true(.isValid_partition(rbinom(100,1,0.5)))
+  
+  vec <- rbinom(100,1,0.5)
+  partition <- rep(0, length(vec))
+  idx <- which(vec != 0)
+  partition[idx] = 1:length(idx)
+  expect_true(.isValid_partition(partition))
+})
