@@ -165,3 +165,10 @@ test_that("it returns a valid BrcFmri", {
   res <- reduce.BrcFmri(mri, parcellation)
   expect_true(isValid(res))
 })
+
+test_that("it gets the same thing when reduce onto itself", {
+  res <- reduce.BrcFmri(mri, mri$parcellation)
+  expect_true(all(mri$data2d == res$data2d))
+  expect_true(mri$id == res$id)
+  expect_true(all(mri$parcellation$partition == res$parcellation$partition))
+})
