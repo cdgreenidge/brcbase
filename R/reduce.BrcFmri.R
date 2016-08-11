@@ -1,14 +1,49 @@
-reduce <- function(x, ...) {UseMethod("reduce")}
+#' Reduces S3's representation
+#'
+#' Generic function to reduce the S3 object's representation to
+#' a simpler one. Its implementation depends on the specific class
+#' passed in.
+#'
+#' @param obj The object to reduce
+#' @param template The template specifying the regions to reduce obj to
+#' @param func The function specifying how to do the reduction
+#'
+#' @return void
+#' @export
+reduce <- function(obj, template, func) {UseMethod("reduce")}
 
-reduce.BrcFmri <- function(x, y, func = reduce_mean){
-  .isValid_reduction(x,y)
+#' Reducing function for BrcFmri object given parcellation
+#' 
+#' Reduces the BrcFmri object passed in based on applying a function
+#' over each partition specified by a given BrcParcellation object. 
+#' Both the BrcFmri and BrcParcellation must have the same dimensions.
+#'
+#' @param obj The BrcFmri object to reduce
+#' @param template The BrcParcellation object to use as a template
+#' @param func The function to apply to each partition of parcellation in
+#' obj
+#'
+#' @return A BrcFmri object with the reduced data2d object, the same
+#' id as obj, and the parcellation of template
+#' @export
+reduce.BrcFmri <- function(obj, template, func = reduce_mean){
+  .isValid_reduction(obj,template)
   
-  mat <- .reduceFmritoParcellation(x, y, func)
+  mat <- .reduceFmritoParcellation(obj, template, func)
   
-  structure(list(data2d = mat, id = x$id, parcellation = y),
+  structure(list(data2d = mat, id = obj$id, parcellation = template),
             class = "BrcFmri")
 }
 
+#' Reducing using the mean for reduce.BrcFmri
+#' 
+#' If mat is a matrix with no columns, the all 0-vector is returned.
+#'
+#' @param mat The matrix where each column represents a time series with nrow(mat)
+#' values.
+#'
+#' @return A vector with nrow(mat) values
+#' @export
 reduce_mean <- function(mat){
   stopifnot(is.matrix(mat))
   
@@ -17,6 +52,18 @@ reduce_mean <- function(mat){
   apply(mat, 1, mean)
 }
 
+#' Reducing using the first principal component for reduce.BrcFmri
+#' 
+#' If mat is a matrix with no columns, the all 0-vector is returned. Be warned that
+#' the first principal component is not unique, as the negative of the returned
+#' value is also a valid first principal component. We use the first principal
+#' component decided upon by stat::princomp.
+#'
+#' @param mat The matrix where each column represents a time series with nrow(mat)
+#' values.
+#'
+#' @return A vector with nrow(mat) values
+#' @export
 reduce_pca <- function(mat){
   stopifnot(is.matrix(mat))
   
