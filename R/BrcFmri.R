@@ -91,6 +91,11 @@ isValid.BrcFmri <- function(obj) {
   isValid(obj$parcellation)
 }
 
+#' Printing BrcFmri objects
+#'
+#' @param x a BrcFmri instance
+#' @param ... unused
+#' @export
 print.BrcFmri <- function(x, ...){
   cat("BrcFmri object of dimension", paste0(x$parcellation$dim3d, collapse = " x "),
       "\n with", ncol(x$data2d), "parcels and", nrow(x$data2d), "length\n")
@@ -120,7 +125,7 @@ print.BrcFmri <- function(x, ...){
   invisible() 
 }
 
-#' Summarizing BrainConductor fMRIs
+#' Summarizing BrcFmri objects
 #' 
 #' \code{summary} method for class "\code{BrcFmri}.
 #' 
