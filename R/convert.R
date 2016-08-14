@@ -1,4 +1,16 @@
-convertVoxel3Dto2D <- function(dim3d, vec){
+#' Convert a Voxel's Coordinates (3-dimensional) to Position Index
+#'
+#' vec represents the 3-dimensional coordinates of a voxel and
+#' dim3d represents the total number of voxels in each direction (x,y,z 
+#' direction) for the fmri. Converts vec into the numeric that represents
+#' the position of vec in 3-dimensional array.
+#'
+#' @param dim3d a numeric vector of length 3
+#' @param vec a numeric vector of length 3
+#'
+#' @return numeric representing vec's position in an array of dimension dim3d
+#' @export
+convertVoxel3DtoIndex <- function(dim3d, vec){
   if(!is.numeric(vec) | !is.numeric(dim3d)) 
     stop("dim3d and vec must be numerics")
   if(length(vec) != 3 | length(dim3d) != 3) 
@@ -13,7 +25,19 @@ convertVoxel3Dto2D <- function(dim3d, vec){
   vec[1] + (vec[2]-1)*dim3d[1] + (vec[3]-1)*(dim3d[1]*dim3d[2])
 }
 
-convertVoxel2Dto3D <- function(dim3d, idx){
+#' Convert a Voxel's Position Index to Coordinates (3-dimensional) 
+#'
+#' idx represents the numeric position of a voxel and
+#' dim3d represents the total number of voxels in each direction (x,y,z 
+#' direction) for the fmri. Converts idx into the 3-dimensional
+#' coordinates of the voxel in 3-dimensional array.
+#' 
+#' @param dim3d a numeric vector of length 3
+#' @param idx a numeric
+#'
+#' @return numeric of length 3 representing the 3D coordinates
+#' @export
+convertVoxelIndexto3D <- function(dim3d, idx){
   if(!is.numeric(idx) | !is.numeric(dim3d)) 
     stop("dim3d and idx must be numerics")
   if(length(dim3d) != 3) stop("dim3d must have length 3")
