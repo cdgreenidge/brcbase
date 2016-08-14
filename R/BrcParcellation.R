@@ -79,3 +79,4 @@ isValid.BrcParcellation <- function(obj) {
   
   TRUE
 }
+

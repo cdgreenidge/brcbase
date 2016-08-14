@@ -100,8 +100,12 @@ isValid.BrcFmri <- function(obj) {
 #' @export
 summary.BrcFmri <- function(object, ...) {
   dims <- dim4d(object)
-  cat(sprintf("Id:                %s\n", object$id))
-  cat(sprintf("Volume resolution: %d x %d x %d voxels\n", dims[1], dims[2],
+  cat(sprintf("Id:                      %s\n", object$id))
+  cat(sprintf("Volume resolution:       %d x %d x %d voxels\n", dims[1], dims[2],
               dims[3]))
-  cat(sprintf("Scan length:       %d volumes\n", dims[4]))
+  cat(sprintf("Number of parcellations: %d parcels\n", ncol(object$data2d)))
+  cat(sprintf("Scan length:             %d volumes\n", dims[4]))
+  cat(sprintf("Estimate size:           %.2f Mb\n", utils::object.size(object)/1024^2,2))
+
+  invisible()
 }
