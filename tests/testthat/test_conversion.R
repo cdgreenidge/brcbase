@@ -2,6 +2,30 @@ context("Test convert.R")
 
 ## Test convertVoxel3Dto2D()
 
+test_that("it errors on non-numeric",{
+  expect_error(convertVoxel3Dto2D("a",c(1,1,1)))
+  expect_error(convertVoxel3Dto2D(c(1,1,1)), "a")
+})
+
+test_that("it errors when not length 3", {
+  expect_error(convertVoxel3Dto2D(rep(5,3),rep(4,2)))
+  expect_error(convertVoxel3Dto2D(rep(4,2),rep(2,3)))
+})
+
+test_that("it errors on negative values", {
+  expect_error(convertVoxel3Dto2D(rep(5,3),c(-1,3,3)))
+  expect_error(convertVoxel3Dto2D(c(-1,5,-5),c(1,3,3)))
+})
+
+test_that("it errors on non-integer", {
+  expect_error(convertVoxel3Dto2D(c(5,4.2,5), c(3,3,3)))
+  expect_error(convertVoxel3Dto2D(c(5,5,5), c(3,3.2,3)))
+})
+
+test_that("it errors when prod(vec) is larger than prod(dim3d)", {
+  expect_error(convertVoxel3Dto2D(c(5,5,5), c(5,5,6)))
+})
+
 test_that("it returns the first idx correctly",{
   dim3d <- c(5,5,5)
   expect_true(convertVoxel3Dto2D(dim3d, c(1,1,1)) == 1)
@@ -21,6 +45,33 @@ test_that("it returns the middle idx correctly",{
 ###############
 
 ## Test convertVoxel2to3D()
+
+test_that("it errors on non-numeric",{
+  expect_error(convertVoxel2Dto3D("a",1))
+  expect_error(convertVoxel2Dto3D(1, "a"))
+})
+
+test_that("it errors when dim3d not length 3", {
+  expect_error(convertVoxel2Dto3D(rep(5,2),5))
+})
+
+test_that("it errors when idx not length 1", {
+  expect_error(convertVoxel2Dto3D(rep(5,3),c(1,1)))
+})
+
+test_that("it errors on negative values", {
+  expect_error(convertVoxel2Dto3D(rep(5,3), -3))
+  expect_error(convertVoxel2Dto3D(c(-1,5,-5), 15))
+})
+
+test_that("it errors on non-integer", {
+  expect_error(convertVoxel2Dto3D(c(5,4.2,5), 15))
+  expect_error(convertVoxel2Dto3D(c(5,5,5), 2.3))
+})
+
+test_that("it errors when idx is larger than prod(dim3d)", {
+  expect_error(convertVoxel2Dto3D(c(5,5,5), 5*5*6))
+})
 
 test_that("it returns the first coordinate correctly", {
   dim3d <- c(5,5,5)
