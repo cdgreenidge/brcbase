@@ -91,6 +91,35 @@ isValid.BrcFmri <- function(obj) {
   isValid(obj$parcellation)
 }
 
+print.BrcFmri <- function(x, ...){
+  cat("BrcFmri object of dimension", paste0(x$parcellation$dim3d, collapse = " x "),
+      "\n with", ncol(x$data2d), "parcels and", nrow(x$data2d), "length\n")
+  cat("----------\n\n")
+  
+  if(nrow(x$data2d) > 10 | ncol(x$data2d) > 10){
+    cat("$data2d (Abridged)\n")
+  } else {
+    cat("$data2d\n")
+  }
+  print(head(x$data2d[,1:min(10,ncol(x$data2d))]))
+  
+  cat("\n$id\n")
+  print(x$id)
+  
+  cat("\n$parcellation (Object of class BrcParcellation)\n")
+  cat("$$dim3d\n")
+  print(x$parcellation$dim3d)
+  
+  if(length(x$parcellation$partition) > 10){
+    cat("\n$$partition (Abridged)\n")
+  } else {
+    cat("\n$$partition\n")
+  }
+  print(head(x$parcellation$partition))
+ 
+  invisible() 
+}
+
 #' Summarizing BrainConductor fMRIs
 #' 
 #' \code{summary} method for class "\code{BrcFmri}.
