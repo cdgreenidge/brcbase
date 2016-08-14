@@ -2,8 +2,11 @@
 
 S3method(isValid,BrcFmri)
 S3method(isValid,BrcParcellation)
+S3method(print,BrcFmri)
+S3method(print,BrcParcellation)
 S3method(reduce,BrcFmri)
 S3method(summary,BrcFmri)
+S3method(summary,BrcParcellation)
 export(BrcFmri)
 export(BrcParcellation)
 export(buildBrcFmri)

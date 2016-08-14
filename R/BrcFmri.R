@@ -92,6 +92,8 @@ isValid.BrcFmri <- function(obj) {
 }
 
 #' Printing BrcFmri objects
+#' 
+#' \code{print} method for class "\code{BrcFmri}.
 #'
 #' @param x a BrcFmri instance
 #' @param ... unused
@@ -106,7 +108,7 @@ print.BrcFmri <- function(x, ...){
   } else {
     cat("$data2d\n")
   }
-  print(head(x$data2d[,1:min(10,ncol(x$data2d))]))
+  print(utils::head(x$data2d[,1:min(10,ncol(x$data2d))]))
   
   cat("\n$id\n")
   print(x$id)
@@ -120,7 +122,7 @@ print.BrcFmri <- function(x, ...){
   } else {
     cat("\n$$partition\n")
   }
-  print(head(x$parcellation$partition))
+  print(x$parcellation$partition[1:min(10, length(x$parcellation$partition))])
  
   invisible() 
 }
