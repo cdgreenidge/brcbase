@@ -122,3 +122,11 @@ summary.BrcParcellation <- function(object, ...){
   
   invisible()
 }
+
+
+numParcels <- function(parcellation){
+  if(class(parcellation) != "BrcParcellation")
+    stop("parcellation must be of class BrcParcellation")
+  
+  length(which(parcellation$partition != 0))
+}

@@ -38,6 +38,9 @@ test_that("it knows how to check itself for validity", {
   expect_error(isValid(BrcParcellation(dim3d=c(2, 2, 2), partition=part)))
 })
 
+test_that("it errors on empty parcellations", {
+  expect_error(BrcParcellation(c(2,2,2),rep(0,8)))
+})
 
 ######
 
@@ -70,4 +73,22 @@ test_that("it works as expected on valid partitions", {
   idx <- which(vec != 0)
   partition[idx] = 1:length(idx)
   expect_true(.isValid_partition(partition))
+})
+
+#####################
+
+## test numParcels()
+
+test_that("numParcels errors when given not a BrcParcellation",{
+  expect_error(numParcels(1:10))
+})
+
+test_that("numParcels counts correctly", {
+  parcellation <- brcbase::BrcParcellation(c(2,2,2),1:8)
+  expect_true(numParcels(parcellation) == 8)
+})
+
+test_that("numParcel counts correctly when some voxels are empty",{
+  parcellation <- brcbase::BrcParcellation(c(2,2,2),c(0,1:6,0))
+  expect_true(numParcels(parcellation) == 6)
 })
