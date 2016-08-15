@@ -1,17 +1,3 @@
-#' Reduces S3's representation
-#'
-#' Generic function to reduce the S3 object's representation to
-#' a simpler one. Its implementation depends on the specific class
-#' passed in.
-#'
-#' @param obj The object to reduce
-#' @param template The template specifying the regions to reduce obj to
-#' @param func The function specifying how to do the reduction
-#'
-#' @return void
-#' @export
-reduce <- function(obj, template, func) {UseMethod("reduce")}
-
 #' Reducing function for BrcFmri object given parcellation
 #' 
 #' Reduces the BrcFmri object passed in based on applying a function
@@ -26,7 +12,7 @@ reduce <- function(obj, template, func) {UseMethod("reduce")}
 #' @return A BrcFmri object with the reduced data2d object, the same
 #' id as obj, and the parcellation of template
 #' @export
-reduce.BrcFmri <- function(obj, template, func = reduce_mean){
+reduce <- function(obj, template, func = reduce_mean){
   .isValid_reduction(obj,template)
   
   mat <- .reduceFmritoParcellation(obj, template, func)

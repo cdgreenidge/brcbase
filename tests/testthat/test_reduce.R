@@ -1,4 +1,4 @@
-context("Test reduce.BrcFmri.R")
+context("Test reduce.R")
 
 mat <- matrix(1:8, nrow=2, ncol=4)
 mri <- BrcFmri(data2d = mat, id = "01",
@@ -159,15 +159,15 @@ test_that("it errors when passed a bad function", {
 
 ########################
 
-## test reduce.BrcFmri()
+## test reduce()
 
 test_that("it returns a valid BrcFmri", {
-  res <- reduce.BrcFmri(mri, parcellation)
+  res <- reduce(mri, parcellation)
   expect_true(isValid(res))
 })
 
 test_that("it gets the same thing when reduce onto itself", {
-  res <- reduce.BrcFmri(mri, mri$parcellation)
+  res <- reduce(mri, mri$parcellation)
   expect_true(all(mri$data2d == res$data2d))
   expect_true(mri$id == res$id)
   expect_true(all(mri$parcellation$partition == res$parcellation$partition))
