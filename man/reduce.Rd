@@ -4,19 +4,19 @@
 \alias{reduce}
 \title{Reducing function for BrcFmri object given parcellation}
 \usage{
-reduce(obj, template, func = reduce_mean)
+reduce(fmri, parcellation, func = reduce_mean)
 }
 \arguments{
-\item{obj}{The BrcFmri object to reduce}
+\item{fmri}{The BrcFmri object to reduce}
 
-\item{template}{The BrcParcellation object to use as a template}
+\item{parcellation}{The BrcParcellation object to use as a parcellation}
 
 \item{func}{The function to apply to each partition of parcellation in
-obj}
+fmri}
 }
 \value{
 A BrcFmri object with the reduced data2d object, the same
-id as obj, and the parcellation of template
+id as fmri, and the parcellation of parcellation
 }
 \description{
 Reduces the BrcFmri object passed in based on applying a function

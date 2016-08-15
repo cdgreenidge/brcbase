@@ -4,20 +4,20 @@
 #' over each partition specified by a given BrcParcellation object. 
 #' Both the BrcFmri and BrcParcellation must have the same dimensions.
 #'
-#' @param obj The BrcFmri object to reduce
-#' @param template The BrcParcellation object to use as a template
+#' @param fmri The BrcFmri object to reduce
+#' @param parcellation The BrcParcellation object to use as a parcellation
 #' @param func The function to apply to each partition of parcellation in
-#' obj
+#' fmri
 #'
 #' @return A BrcFmri object with the reduced data2d object, the same
-#' id as obj, and the parcellation of template
+#' id as fmri, and the parcellation of parcellation
 #' @export
-reduce <- function(obj, template, func = reduce_mean){
-  .isValid_reduction(obj,template)
+reduce <- function(fmri, parcellation, func = reduce_mean){
+  .isValid_reduction(fmri,parcellation)
   
-  mat <- .reduceFmritoParcellation(obj, template, func)
+  mat <- .reduceFmritoParcellation(fmri, parcellation, func)
   
-  structure(list(data2d = mat, id = obj$id, parcellation = template),
+  structure(list(data2d = mat, id = fmri$id, parcellation = parcellation),
             class = "BrcFmri")
 }
 
