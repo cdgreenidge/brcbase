@@ -124,6 +124,12 @@ summary.BrcParcellation <- function(object, ...){
 }
 
 
+#' Count number of unique parcels in BrcParcellation object
+#'
+#' @param parcellation the BrcParcellation object
+#'
+#' @return the number of parcels
+#' @export
 numParcels <- function(parcellation){
   if(class(parcellation) != "BrcParcellation")
     stop("parcellation must be of class BrcParcellation")
