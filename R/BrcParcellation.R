@@ -89,7 +89,7 @@ isValid.BrcParcellation <- function(obj) {
 #' @export
 print.BrcParcellation <- function(x, ...){
   cat("BrcParcellation object of dimension", paste0(x$dim3d, collapse = " x "),
-      "\n with", length(which(x$partition != 0)), "parcels\n")
+      "\n with", numParcels(x), "parcels\n")
   cat("----------\n\n")
   
   cat("$dim3d\n")
@@ -117,7 +117,7 @@ summary.BrcParcellation <- function(object, ...){
   cat(sprintf("Volume resolution:       %d x %d x %d voxels\n", dims[1], dims[2],
               dims[3]))
   cat(sprintf("Number of parcellations: %d parcels\n", 
-              length(which(object$partition != 0))))
+              numParcels(object)))
   cat(sprintf("Estimate size:           %.2f Mb\n", utils::object.size(object)/1024^2,2))
   
   invisible()
@@ -134,5 +134,5 @@ numParcels <- function(parcellation){
   if(class(parcellation) != "BrcParcellation")
     stop("parcellation must be of class BrcParcellation")
   
-  length(which(parcellation$partition != 0))
+  length(unique(parcellation$partition[parcellation$partition != 0]))
 }

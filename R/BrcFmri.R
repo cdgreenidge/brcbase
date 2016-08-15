@@ -78,8 +78,7 @@ dim4d <- function(mri) {
 #' @return void
 #' @export
 isValid.BrcFmri <- function(obj) {
-  partition <- obj$parcellation$partition
-  num3dVoxels <- length(which(unique(partition) != 0))
+  num3dVoxels <- numParcels(obj$parcellation)
   if (ncol(obj$data2d) != num3dVoxels) {
     stop(paste("Number of columns in data matrix does not equal number of 3D",
                "voxels specified in the parcellation. If you used the default",

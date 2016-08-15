@@ -55,7 +55,7 @@ test_that("0 values in the partition are allowed", {
   partition <- c(0, 1, 2, 2, 3, 3, 4, 0)
   parcellation <- BrcParcellation(dim3d=c(2, 2, 2), partition)
   mri <- BrcFmri(data2d=mat, id="01", parcellation=parcellation)
-  expect_error(isValid(mri), NA)
+  expect_true(isValid(mri))
 })
 
 test_that("it also checks the parcellation it contains for validity", {
