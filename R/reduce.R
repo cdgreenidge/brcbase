@@ -62,11 +62,11 @@ reduce_pca <- function(mat){
   if(class(x) != "BrcFmri") stop("x must be class BrcFmri")
   if(class(y) != "BrcParcellation") stop("y must be class BrcParcellation")
   
-  if(!all(x$parcellation$dim3d == y$dim3d)) stop("x and y must have the same 
-    dim3d")
+  if(!all(x$parcellation$dim3d == y$dim3d)) stop(paste("x and y must have the",
+   "same dim3d"))
   
-  if(!isValid(x)) stop("x must be a valid BrcFmri. Try isValid(x)")
-  if(!isValid(y)) stop("y must be a valid BrcFmri. Try isValid(y)")
+  isValid(x)
+  isValid(y)
   
   TRUE
 }
@@ -86,8 +86,8 @@ reduce_pca <- function(mat){
   
   if(nrow(x$data2d) == 1) mat <- matrix(mat, ncol = length(mat))
   
-  if(!is.matrix(mat)) stop("func used has corrupted the reduction. Please check the
-                          func.")
+  if(!is.matrix(mat)) stop(paste("func used has corrupted the reduction. Please",
+    "check the func."))
   
   mat
 }

@@ -65,6 +65,14 @@ test_that("it can handle matrix with no columns", {
 
 ## test .isValid_reduction()
 
+test_that("it errors when x is not an BrcFmri",{
+  expect_error(.isValid_reduction(mri$parcellation, mri$parcellation))
+})
+
+test_that("it errors when y is not a parcellation", {
+  expect_error(.isValid_reduction(mri, mri))
+})
+
 test_that("it errors when fmri and parcellation don't match in dimension", {
   mat.big <- matrix(5, nrow = 2, ncol = 27)
   mri.big <- BrcFmri(data2d = mat.big, id = "03", 
