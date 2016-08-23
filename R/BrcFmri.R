@@ -134,6 +134,7 @@ print.BrcFmri <- function(x, ...){
 #' @param ... unused
 #' @export
 summary.BrcFmri <- function(object, ...) {
+  cat("Summary of BrcFmri object\n----------\n")
   dims <- dim4d(object)
   cat(sprintf("Id:                      %s\n", object$id))
   cat(sprintf("Volume resolution:       %d x %d x %d voxels\n", dims[1], dims[2],

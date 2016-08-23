@@ -79,3 +79,19 @@ test_that("errors if data2d and parcellation don't match in columns",{
   expect_error(BrcFmri(data2d = mat2, id = "02",
                   parcellation = BrcParcellation(c(2,2,2), c(0,0,1,1,2,2,3,4))))
 })
+
+#################
+
+## test print and summary
+
+test_that("BrcFmri has a meaningful print statement", {
+  fmri <- BrcFmri(data2d=mat, id="01", parcellation=parcellation)
+  res <- paste0(capture.output(print(fmri)), collapse = " ")
+  expect_true(grep("BrcFmri", res) == 1)
+})
+
+test_that("BrcFmri has a meaningful summary statement", {
+  fmri <- BrcFmri(data2d=mat, id="01", parcellation=parcellation)
+  res <- paste0(capture.output(summary(fmri)), collapse = " ")
+  expect_true(grep("BrcFmri", res) == 1)
+})
