@@ -61,8 +61,8 @@ isValid.BrcParcellation <- function(obj) {
   } else if (length(obj$partition) != prod(obj$dim3d)) {
     stop("partition must be length equal to the product of elements in dim3d")
   } else if (!all(obj$partition <= prod(obj$dim3d))) {
-    stop("all elements in partition must be consecutive integers 
-      starting from 0 or 1")
+    stop(paste("all elements in partition must be consecutive integers",
+      "starting from 0 or 1"))
   }
   
   .isValid_partition(obj$partition)
@@ -73,12 +73,12 @@ isValid.BrcParcellation <- function(obj) {
 .isValid_partition <- function(partition) {
   if(!is.numeric(partition)) stop("partition must be a numeric vector")
   if(!all(partition >= 0)) stop("partition must be all non-negative integers")
-  if(!all(diff(sort(unique(partition))) == 1)) stop("partition must be 
-    consecutive integers")
-  if(!(all(partition %%1 == 0))) stop("partition all must be non-negative 
-    integers")
-  if(all(partition == 0)) stop("partition must have at least one positive 
-    integer")
+  if(!all(diff(sort(unique(partition))) == 1)) stop(paste("partition must be",
+    "consecutive integers"))
+  if(!(all(partition %%1 == 0))) stop(paste("partition all must be",
+    "non-negative integers"))
+  if(all(partition == 0)) stop(paste("partition must have at least one",
+    "positive integer"))
   
   TRUE
 }
