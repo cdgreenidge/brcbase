@@ -62,7 +62,3 @@ data4dTo2d <- function(arr4d) {
 
   expandedMatrix
 }
-
-.factorToNumeric <- function(f) {
-  as.numeric(levels(f))[f]
-}
