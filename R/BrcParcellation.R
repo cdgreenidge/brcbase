@@ -35,19 +35,12 @@
 #' @return a new \code{BrcParcellation} instance.
 #' @export   
 BrcParcellation <- function(dim3d, partition) {
-  if (!is.numeric(dim3d)) {
-    stop("dim3d argument must be a 3-element numeric vector")
-  } else if (length(dim3d) != 3) {
-    stop("dim3d argument must be a 3-element numeric vector")
-  } else if (length(partition) != prod(dim3d)) {
-    stop("partition must be length equal to the product of elements in dim3d")
-  } else if (!all(partition <= prod(dim3d))) {
-    stop("all elements in partition must be consecutive integers starting from 0 or 1")
-  }
+  res <- structure(list(dim3d=dim3d, partition=partition), 
+    class="BrcParcellation")
   
-  .isValid_partition(partition)
-
-  structure(list(dim3d=dim3d, partition=partition), class="BrcParcellation")
+  isValid(res)
+  
+  res
 }
 
 #' Checking \code{BrcParcellation} instance validity.
@@ -61,10 +54,17 @@ BrcParcellation <- function(dim3d, partition) {
 #' @return void
 #' @export
 isValid.BrcParcellation <- function(obj) {
-  num3dVoxels <- Reduce("*", obj$dim3d)
-  if (length(obj$partition) != num3dVoxels) {
-    stop("Length of partition not equal to number of 3D voxels.")
+    if (!is.numeric(obj$dim3d)) {
+    stop("dim3d argument must be a 3-element numeric vector")
+  } else if (length(obj$dim3d) != 3) {
+    stop("dim3d argument must be a 3-element numeric vector")
+  } else if (length(obj$partition) != prod(obj$dim3d)) {
+    stop("partition must be length equal to the product of elements in dim3d")
+  } else if (!all(obj$partition <= prod(obj$dim3d))) {
+    stop("all elements in partition must be consecutive integers 
+      starting from 0 or 1")
   }
+  
   .isValid_partition(obj$partition)
   
   TRUE
@@ -73,9 +73,12 @@ isValid.BrcParcellation <- function(obj) {
 .isValid_partition <- function(partition) {
   if(!is.numeric(partition)) stop("partition must be a numeric vector")
   if(!all(partition >= 0)) stop("partition must be all non-negative integers")
-  if(!all(diff(sort(unique(partition))) == 1)) stop("partition must be consecutive integers")
-  if(!(all(partition %%1 == 0))) stop("partition all must be non-negative integers")
-  if(all(partition == 0)) stop("partition must have at least one positive integer")
+  if(!all(diff(sort(unique(partition))) == 1)) stop("partition must be 
+    consecutive integers")
+  if(!(all(partition %%1 == 0))) stop("partition all must be non-negative 
+    integers")
+  if(all(partition == 0)) stop("partition must have at least one positive 
+    integer")
   
   TRUE
 }
@@ -113,6 +116,7 @@ print.BrcParcellation <- function(x, ...){
 #' @param ... unused
 #' @export
 summary.BrcParcellation <- function(object, ...){
+  cat("Summary of BrcParcellation object\n----------\n")
   dims <- object$dim3d
   cat(sprintf("Volume resolution:       %d x %d x %d voxels\n", dims[1], dims[2],
               dims[3]))

@@ -11,11 +11,11 @@ test_that("it contains a 3-element dimension vector", {
 })
 
 test_that("dim3d must be a numeric vector", {
-  expect_error(BrcParcellation(dim3d="hi"), "dim3d")
+  expect_error(BrcParcellation(dim3d="hi", parcellation = 0))
 })
 
 test_that("dim3d must be 3 elements long", {
-  expect_error(BrcParcellation(dim3d=c(1, 2)), "dim3d")
+  expect_error(BrcParcellation(dim3d=c(1, 2)))
 })
 
 test_that("it contains a partition vector", {
@@ -27,6 +27,18 @@ test_that("it contains a partition vector", {
 test_that("the partition must be a vector", {
   expect_error(BrcParcellation(dim3d=c(2, 2, 2), partition=character()))
 })
+
+test_that("the partition must be consecutive from 1", {
+  part <- 2:9
+  expect_error(BrcParcellation(dim3d=c(2, 2, 2), partition=part))
+})
+
+test_that("the partition can start from 0", {
+  part <- 0:7
+  parcellation <- BrcParcellation(dim3d=c(2, 2, 2), partition=part)
+  expect_true(isValid(parcellation))
+})
+
 
 test_that("the partition must have levels >= 0", {
   part <- -1:6
@@ -98,3 +110,18 @@ test_that("numParcel counts correctly when some voxels are empty",{
   expect_true(numParcels(parcellation) == 3)
 })
 
+#################
+
+## test print and summary
+
+test_that("BrcParcellation has a meaningful print statement", {
+  parcellation <- BrcParcellation(dim3d=c(2, 2, 2), 1:8)
+  res <- paste0(capture.output(print(parcellation)), collapse = " ")
+  expect_true(grep("BrcParcellation", res) == 1)
+})
+
+test_that("BrcParcellation has a meaningful summary statement", {
+  parcellation <- BrcParcellation(dim3d=c(2, 2, 2), 1:8)
+  res <- paste0(capture.output(summary(parcellation)), collapse = " ")
+  expect_true(grep("BrcParcellation", res) == 1)
+})
