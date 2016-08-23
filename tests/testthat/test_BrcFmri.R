@@ -95,3 +95,11 @@ test_that("BrcFmri has a meaningful summary statement", {
   res <- paste0(capture.output(summary(fmri)), collapse = " ")
   expect_true(grep("BrcFmri", res) == 1)
 })
+
+test_that("BrcFmri has a meaningful abridged print statement", {
+  parcellation2 <- BrcParcellation(dim3d=c(3,3,3), 1:27)
+  mat2 <- matrix(1:27, nrow = 1)
+  fmri <- BrcFmri(data2d=mat2, id="01", parcellation=parcellation2)
+  res <- paste0(capture.output(print(fmri)), collapse = " ")
+  expect_true(grep("Abridged", res) == 1)
+})

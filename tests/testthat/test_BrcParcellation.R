@@ -125,3 +125,9 @@ test_that("BrcParcellation has a meaningful summary statement", {
   res <- paste0(capture.output(summary(parcellation)), collapse = " ")
   expect_true(grep("BrcParcellation", res) == 1)
 })
+
+test_that("BrcParcellation has a meaningful print abridged statement", {
+  parcellation <- BrcParcellation(dim3d=c(3,3,3), 1:27)
+  res <- paste0(capture.output(print(parcellation)), collapse = " ")
+  expect_true(grep("Abridged", res) == 1)
+})
