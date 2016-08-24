@@ -7,3 +7,5 @@
 #' @return void
 #' @export
 isValid <- function(obj) UseMethod("isValid")
+
+checkMotion <- function(obj) UseMethod("checkMotion")
