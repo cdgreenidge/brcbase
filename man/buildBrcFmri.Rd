@@ -4,27 +4,31 @@
 \alias{buildBrcFmri}
 \title{BrcFmri Builder}
 \usage{
-buildBrcFmri(data2d, dim3d, id = "", partition = NULL)
+buildBrcFmri(data4d, id = "")
 }
 \arguments{
-\item{data2d, }{the 2D fMRI matrix (time x voxels)}
-
-\item{dim3d, }{the dimensions of the 3D fMRI volume}
+\item{data4d, }{the 4D fMRI matrix (x-direction x y-direction x z-direction
+x time)}
 
 \item{id, }{an ID string}
-
-\item{partition, }{a factor specifying the 3D fMRI partitions. The default 
-(\code{NULL}) will put every 3D fMRI voxel in its own partition. If you 
-wish to specify a custom partition, see \code{\link{BrcParcellation}} for 
-format details.}
 }
 \value{
 a \code{BrcFmri} instance
 }
 \description{
 \code{buildBrcFmri} is a helper function that quickly build a \code{BrcFmri}
-instance. Its main benefit is that it constructs all of the BrcFmri object's
-dependencies (a \code{BrcParcellation} and a \code{partition}) for you.
+instance from a 4-dimensional matrix. Its main benefit is that it 
+constructs all of the BrcFmri object's dependencies 
+(a \code{BrcParcellation} and a \code{partition}) for you. 
+Here, data4d is a 4-dimensional matrix where the first 3 dimensions 
+refer to the x, y, z coordinates and the 4th dimension refers to time.
+}
+\details{
+Along each 3-dimensional matrix indexed by time, each voxel corresponds to
+an x, y, z coordinate. An non-empty voxel is a voxel whose vector along the
+4th-dimension (time) is all non-zero. \code{buildBrcFmri} assumes a
+singleton parcellation where each non-empty voxel is assigned its own 
+parcel.
 }
 \seealso{
 \code{\link{BrcFmri}}, \code{\link{BrcParcellation}}

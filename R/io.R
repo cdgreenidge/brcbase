@@ -14,8 +14,7 @@ readNifti <- function(file, id=NULL) {
   }
 
   nifti <- oro.nifti::readNIfTI(file)
-  mat2d <- data4dTo2d(nifti@.Data)
-  buildBrcFmri(data2d=mat2d, dim3d=dim(nifti)[-4], id=id, partition=NULL)
+  buildBrcFmri(nifti@.Data, id=id)
 }
 
 #' Convert a 2D fMRI data matrix to a 4D fMRI array 
