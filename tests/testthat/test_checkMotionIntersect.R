@@ -18,3 +18,13 @@ test_that("it returns true for dimension 3", {
   mat <- array(0, rep(3,3))
   expect_true(checkMotion(mat))
 })
+
+####################
+
+## test checkMotion.nifti
+
+test_that("it works for oro.nifti objects", {
+  path <- "../assets/5002_ABIDE_segment.nii.gz"
+  nifti <- oro.nifti::readNIfTI(path)
+  expect_true(checkMotion(nifti))
+})
