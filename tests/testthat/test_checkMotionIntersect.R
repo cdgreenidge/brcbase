@@ -20,8 +20,12 @@ test_that("it returns true for dimension 3", {
 })
 
 test_that("it returns false if there are 0 in the middle of the time series",{
-  mat <- array(0, c(2,2,2,3))
-  mat[1,1,1,1] <- 1
+  mat <- array(0, rep(3,4))
+  mat[1,1,1,] <- 1
+  mat[2,2,2,] <- 2
+  mat[3,3,3,] <- 3
+  mat[1,2,3,1] <- -1
+  
   expect_true(!checkMotion(mat))
 })
 
@@ -31,6 +35,27 @@ test_that("it returns true normally", {
   mat[1,3,2,] <- rnorm(3)
   mat[2,2,2,] <- -3
   expect_true(checkMotion(mat))
+})
+
+test_that("it returns false for non-zero in the middle of time series", {
+  mat <- array(0, rep(3,4))
+  mat[1,1,1,] <- 1
+  mat[2,2,2,] <- 2
+  mat[3,3,3,] <- 3
+  mat[1,2,3,3] <- -1
+  
+  expect_true(!checkMotion(mat))
+})
+
+test_that("it can accept an index vector", {
+  mat <- array(0, rep(3,4))
+  mat[1,1,1,] <- 1
+  mat[2,2,2,] <- 2
+  mat[3,3,3,] <- 3
+  mat[1,2,3,3] <- -1
+  
+  idx <- which(mat[,,,1] != 0)
+  expect_true(checkMotion(mat, idx))
 })
 
 ####################
