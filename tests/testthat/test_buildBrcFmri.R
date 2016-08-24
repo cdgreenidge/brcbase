@@ -9,6 +9,26 @@ test_that("buildBrcFmri builds an fMRI object", {
   expect_equal(class(mri), "BrcFmri")
 })
 
+test_that("it errors when given not a 4D array", {
+  mat <- matrix(0, 5, 5)
+  expect_error(buildBrcFmri(mat))
+})
+
+test_that("it errors when array has more than 4 dimensions", {
+  mat <- array(0, c(2,5))
+  expect_error(buildBrcFmri(mat))
+})
+
+test_that("it errors if there is motion detected",{
+  mat <- array(0, rep(3,4))
+  mat[1,1,1,] <- 1
+  mat[2,2,2,] <- 2
+  mat[3,3,3,] <- 3
+  mat[1,2,3,3] <- -1
+  
+  expect_error(buildBrcFmri(mat))
+})
+
 # Test .buildParcellation()
 
 test_that(".buildParcellation builds a parcellation", {

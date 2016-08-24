@@ -47,17 +47,6 @@ test_that("it returns false for non-zero in the middle of time series", {
   expect_true(!checkMotion(mat))
 })
 
-test_that("it can accept an index vector", {
-  mat <- array(0, rep(3,4))
-  mat[1,1,1,] <- 1
-  mat[2,2,2,] <- 2
-  mat[3,3,3,] <- 3
-  mat[1,2,3,3] <- -1
-  
-  idx <- which(mat[,,,1] != 0)
-  expect_true(checkMotion(mat, idx))
-})
-
 ####################
 
 ## test checkMotion.nifti

@@ -24,6 +24,8 @@ buildBrcFmri <- function(data4d, id="") {
   if(!is.array(data4d)) stop("data4d must be an array")
   dim.vec <- dim(data4d)
   if(length(dim.vec) != 4) stop("data4d must have 4 dimensions")
+  if(!checkMotion(data4d)) stop(paste("data4d must not display any motion.",
+    "See ?checkMotion for more details."))
   
   idx <- which(data4d[,,,1] != 0)
   parcellation <- .buildParcellation(dim.vec[1:3], idx)

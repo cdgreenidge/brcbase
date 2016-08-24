@@ -8,4 +8,4 @@
 #' @export
 isValid <- function(obj) UseMethod("isValid")
 
-checkMotion <- function(obj, ...) UseMethod("checkMotion")
+checkMotion <- function(obj) UseMethod("checkMotion")

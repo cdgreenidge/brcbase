@@ -1,4 +1,4 @@
-checkMotion.array <- function(obj, idx = NULL, ...){
+checkMotion.array <- function(obj){
   dim.vec <- dim(obj)
   stopifnot(length(dim.vec) >= 3, length(dim.vec) <= 4)
   if(length(dim.vec) == 3) return(TRUE)
@@ -8,11 +8,9 @@ checkMotion.array <- function(obj, idx = NULL, ...){
       if(all(x == 0)) 0 else -1
     } else 1
   })
-  
-  if(is.null(idx)){
-    if(any(data.slice == -1)) return(FALSE)
-    idx <- which(obj[,,,1] != 0)
-  } 
+
+  if(any(data.slice == -1)) return(FALSE)
+  idx <- which(obj[,,,1] != 0)
   idx2 <- which(data.slice == 1)
   
   if(length(idx) == length(idx2) && all(sort(idx) == sort(idx2))) {
@@ -22,6 +20,6 @@ checkMotion.array <- function(obj, idx = NULL, ...){
   }
 }
 
-checkMotion.nifti <- function(obj, ...){
+checkMotion.nifti <- function(obj){
   checkMotion(obj@.Data)
 }
