@@ -44,3 +44,32 @@ test_that(".buildParcellation builds a parcellation", {
 test_that(".buildPartition puts each voxel in its own cell if partition=NULL", {
   expect_equal(.buildPartition(c(2,2,2), 1:8), 1:8)
 })
+
+########################
+
+## test buildBrcParcellation
+
+test_that("it errors when given not a 3D array", {
+  mat <- matrix(0, 5, 5)
+  expect_error(buildBrcParcellation(mat))
+})
+
+test_that("it errors when array has more than 3 dimensions", {
+  mat <- array(0, c(2,4))
+  expect_error(buildBrcParcellation(mat))
+})
+
+test_that("it returns the correct parcellation", {
+  mat <- array(0, rep(3,3))
+  mat[c(1,5,10)] <- 1
+  mat[c(2,27)] <- 2
+  
+  parcellation <- buildBrcParcellation(mat)
+  expect_true(class(parcellation) == "BrcParcellation")
+  expect_true(all(parcellation$dim3d == 3))
+  
+  vec <- rep(0, 27)
+  vec[c(1,5,10)] <- 1
+  vec[c(2,27)] <- 2
+  expect_true(all(parcellation$parcellation$partition == vec))
+})

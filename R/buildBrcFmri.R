@@ -49,3 +49,12 @@ buildBrcFmri <- function(data4d, id="") {
   partition
 }
 
+
+buildBrcParcellation <- function(data3d){
+  if(!is.array(data3d)) stop("data3d must be an array")
+  dim.vec <- dim(data3d)
+  if(length(dim.vec) != 3) stop("data3d must have 4 dimensions")
+  
+  idx <- which(data3d != 0)
+  .buildParcellation(dim.vec, idx)
+}
