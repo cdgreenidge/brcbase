@@ -6,18 +6,37 @@ applyMask <- function(fmri, parcellation){
   if(!isValid(parcellation)) stop(paste("parcellation must be a valid",
     "BrcParcellation"))
   
-  voxel.fmri <- which(fmri$parcellation$partition != 0)
-  voxel.parcel <- which(parcellation$partition != 0)
+  uniq.idx <- .findColumnIdx(fmri$parcellation, parcellation)
+  mat <- .translateData2d(fmri$data2d, uniq.idx)
+  partition <- .translatePartition(fmri$parcellation$partition, uniq.idx)
   
-  idx.in <- which(voxel.fmri %in% voxel.parcel)
-  idx.location <- which(voxel.parcel %in% voxel.fmri)
-  
-  mat <- matrix(0, ncol = length(voxel.parcel), nrow = nrow(fmri$data2d))
-  mat[,idx.location] <- fmri$data2d[,idx.in]
-  
-  new.partition <- rep(0, prod(fmri$parcellation$dim3d))
-  new.partition[voxel.fmri[idx.in]] <- 1:length(idx.in)
-  new.parcellation <- BrcParcellation(parcellation$dim3d, new.partition)
-  
+  new.parcellation <- BrcParcellation(parcellation$dim3d, partition)
   BrcFmri(data2d = mat, id = fmri$id, parcellation = new.parcellation)
+}
+
+.findColumnIdx <- function(parcellationBase, parcellationMask){
+  voxel.base <- which(parcellationBase$partition != 0)
+  voxel.mask <- which(parcellationMask$partition != 0)
+  
+  voxel.baseIdx <- which(voxel.base %in% voxel.mask)
+ 
+  unique(parcellationBase$partition[voxel.base[voxel.baseIdx]])
+}
+
+.translateData2d <- function(data2d, idx){
+  mat <- matrix(0, ncol = length(idx), nrow = nrow(data2d))
+  mat[,1:length(idx)] <- data2d[,idx]
+  
+  mat
+}
+
+.translatePartition <- function(old.partition, idx){
+  new.partition <- rep(0, length(old.partition))
+  
+  for(i in 1:length(idx)){
+    loc <- which(old.partition == idx[i])
+    new.partition[loc] <- i
+  }
+  
+  new.partition
 }
