@@ -52,9 +52,10 @@ applyMask <- function(fmri, parcellation){
   numPar <- length(uniq)
   
   uniqIn <- uniq[uniq > 0]
+  uniqIn <- sort(uniqIn)
   
   data2dNew <- matrix(0, ncol = numPar, nrow = nrow(data2d))
-  data2dNew[,1:length(uniqIn)] <- data2d[,uniqIn]
+  if(length(uniqIn) > 0) data2dNew[,1:length(uniqIn)] <- data2d[,uniqIn]
   
   data2dNew
 }
