@@ -62,6 +62,21 @@ test_that("it adds zero-columns when appropriate", {
   expect_true(all(res$parcellation$partition == c(0,0,0,0,1,1,2,2)))
 })
 
+test_that("it rearranges the partitions in order",{
+  mat <- matrix(1:12, nrow=2, ncol=6)
+  dim3d <- c(2, 2, 2)
+  partition <- c(0,0,1:6)
+  parcellation <- BrcParcellation(dim3d, partition)
+  mri2 <- BrcFmri(data2d=mat, id="01", parcellation=parcellation)  
+  
+  parcellation3 <- BrcParcellation(dim3d, partition = c(1,2,0,0,0,0,4,3))
+  res <- applyMask(mri2, parcellation3)
+  
+  expect_true(ncol(res$data2d) == 3)
+  expect_true(all(as.numeric(res$data2d) == c(9,10,11,12,0,0)))
+  expect_true(all(res$parcellation$partition == c(3,3,0,0,0,0,1,2)))
+})
+
 
 ########################
 
@@ -104,23 +119,75 @@ test_that("it works when there is no overlap at all",{
   expect_true(all(res == c(-1,-1,-1,-1,0,0,0,0)))
 })
 
+test_that("index of parcellation are never 0",{
+  set.seed(10)
+  par1 <- sample(0:10, 100, replace = T)
+  par2 <- sample(0:10, 100, replace = T)
+  res <- .translatePartition(par1, par2)
+  
+  expect_true(length(res) == 100)
+  expect_true(all(res[par2 != 0] != 0))
+})
+
 #########################
 
 ## test .translateData2d
 
 test_that("it works on the identity",{
   mat <- matrix(1:8, ncol = 4, nrow = 2)
-  par <- c(4,4,2,2,3,3,1,1)
-  res <- .translateData2d(mat, par)
+  partition <- c(4,4,2,2,3,3,1,1)
+  res <- .translateData2d(mat, partition)
   
   expect_true(all(res == mat))
 })
 
 test_that("it works normally when partition has all positive",{
   mat <- matrix(1:8, ncol = 4, nrow = 2)
-  par <- c(0,0,0,0,3,3,4,4)
-  res <- .translateData2d(mat, par)
+  partition <- c(0,0,0,0,3,3,4,4)
+  res <- .translateData2d(mat, partition)
   
   expect_true(ncol(res) == 2)
   expect_true(all(as.numeric(res) == c(5,6,7,8)))
+})
+
+test_that("it works when there is no overlap", {
+  mat <- matrix(1:8, ncol = 4, nrow = 2)
+  partition <- c(0,0,0,0,-1)
+  res <- .translateData2d(mat, partition)
+  
+  expect_true(ncol(res) == 1)
+  expect_true(all(res == 0))
+})
+
+test_that("it works when there are positive and negative vals in parcellation",{
+  mat <- matrix(1:8, ncol = 4, nrow = 2)
+  partition <- c(0,0,4,2,-1,3)
+  res <- .translateData2d(mat, partition)
+  
+  expect_true(ncol(res) == 4)
+  expect_true(all(as.numeric(res) == c(3,4,5,6,7,8,0,0)))
+})
+
+#####################
+
+## test .reindexPartition
+
+test_that("it works on the identity (nothing to do)",{
+  partition <- c(1:8)
+  expect_true(all(.reindexPartition(partition) == partition))
+})
+
+test_that("it works on the empty vector with only -1", {
+  partition <- c(0,-1)
+  expect_true(all(.reindexPartition(partition) == c(0,1)))
+})
+
+test_that("it works when there are -1 involved",{
+  partition <- c(0,0,0,1:5,-1)
+  expect_true(all(.reindexPartition(partition) == c(0,0,0,1:6)))
+})
+
+test_that("it works when the partition does not start from 0",{
+  partition <- c(0,4,3,9,-1)
+  expect_true(all(.reindexPartition(partition) == c(0,2,1,3,4)))
 })

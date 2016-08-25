@@ -36,7 +36,7 @@ applyMask <- function(fmri, parcellation){
 
 .reindexPartition <- function(partition){
   idx <- which(partition > 0)
-  uniq <- unique(partition[idx])
+  uniq <- sort(unique(partition[idx]))
   
   for(i in 1:length(uniq)){
     partition[partition == uniq[i]] <- i
