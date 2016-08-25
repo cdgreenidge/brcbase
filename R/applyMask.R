@@ -6,37 +6,55 @@ applyMask <- function(fmri, parcellation){
   if(!isValid(parcellation)) stop(paste("parcellation must be a valid",
     "BrcParcellation"))
   
-  uniq.idx <- .findColumnIdx(fmri$parcellation, parcellation)
-  mat <- .translateData2d(fmri$data2d, uniq.idx)
-  partition <- .translatePartition(fmri$parcellation$partition, uniq.idx)
-  
-  new.parcellation <- BrcParcellation(parcellation$dim3d, partition)
-  BrcFmri(data2d = mat, id = fmri$id, parcellation = new.parcellation)
-}
-
-.findColumnIdx <- function(parcellationBase, parcellationMask){
-  voxel.base <- which(parcellationBase$partition != 0)
-  voxel.mask <- which(parcellationMask$partition != 0)
-  
-  voxel.baseIdx <- which(voxel.base %in% voxel.mask)
+  partitionTmp <- .translatePartition(fmri$parcellation$partition, 
+    parcellation$partition)
  
-  unique(parcellationBase$partition[voxel.base[voxel.baseIdx]])
+  data2dNew <- .translateData2d(fmri$data2d, partitionTmp)
+  
+  partitionNew <- .reindexPartition(partitionTmp)
+  
+  parcellationNew <- BrcParcellation(parcellation$dim3d, partitionNew)
+  BrcFmri(data2d = data2dNew, id = fmri$id, parcellation = parcellationNew)
 }
 
-.translateData2d <- function(data2d, idx){
-  mat <- matrix(0, ncol = length(idx), nrow = nrow(data2d))
-  mat[,1:length(idx)] <- data2d[,idx]
+.translatePartition <- function(partitionBase, partitionMask){
+  voxel.base <- which(partitionBase != 0)
+  voxel.zero <- which(partitionBase == 0)
+  voxel.mask <- which(partitionMask != 0)
+
+  voxel.baseIdx <- which(voxel.base %in% voxel.mask)
+  voxel.zeroIdx <- which(voxel.zero %in% voxel.mask)
   
-  mat
+  partitionNew <- rep(0, length(partitionBase))
+  
+  partitionNew[voxel.base[voxel.baseIdx]] <- 
+    partitionBase[voxel.base[voxel.baseIdx]]
+  partitionNew[voxel.zero[voxel.zeroIdx]] <- -1
+  
+  partitionNew
 }
 
-.translatePartition <- function(old.partition, idx){
-  new.partition <- rep(0, length(old.partition))
+.reindexPartition <- function(partition){
+  idx <- which(partition > 0)
+  uniq <- unique(partition[idx])
   
-  for(i in 1:length(idx)){
-    loc <- which(old.partition == idx[i])
-    new.partition[loc] <- i
+  for(i in 1:length(uniq)){
+    partition[partition == uniq[i]] <- i
   }
   
-  new.partition
+  partition[partition == -1] <- length(uniq)+1
+  
+  partition
+}
+
+.translateData2d <- function(data2d, partitionNew){
+  uniq <- unique(partitionNew[partitionNew != 0])
+  numPar <- length(uniq)
+  
+  uniqIn <- uniq[uniq > 0]
+  
+  data2dNew <- matrix(0, ncol = numPar, nrow = nrow(data2d))
+  data2dNew[,1:length(uniqIn)] <- data2d[,uniqIn]
+  
+  data2dNew
 }
