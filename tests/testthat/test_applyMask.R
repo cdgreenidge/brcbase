@@ -68,13 +68,28 @@ test_that("it rearranges the partitions in order",{
   partition <- c(0,0,1:6)
   parcellation <- BrcParcellation(dim3d, partition)
   mri2 <- BrcFmri(data2d=mat, id="01", parcellation=parcellation)  
-  
   parcellation3 <- BrcParcellation(dim3d, partition = c(1,2,0,0,0,0,4,3))
+  
   res <- applyMask(mri2, parcellation3)
   
   expect_true(ncol(res$data2d) == 3)
   expect_true(all(as.numeric(res$data2d) == c(9,10,11,12,0,0)))
   expect_true(all(res$parcellation$partition == c(3,3,0,0,0,0,1,2)))
+})
+
+test_that("it works when fmri and parcellation don't completely overlap",{
+  mat <- matrix(1:8, nrow=2, ncol=4)
+  dim3d <- c(2, 2, 2)
+  partition <- c(1,0,1,2,0,3,4,2)
+  parcellation <- BrcParcellation(dim3d, partition)
+  mri2 <- BrcFmri(data2d=mat, id="01", parcellation=parcellation)  
+  parcellation3 <- BrcParcellation(dim3d, partition = c(2,2,0,0,0,0,1,2))
+  
+  res <- applyMask(mri2, parcellation3)
+  
+  expect_true(ncol(res$data2d) == 4)
+  expect_true(all(as.numeric(res$data2d) == c(1:4,7,8,0,0)))
+  expect_true(all(res$parcellation$partition == c(1,4,0,0,0,0,3,2)))
 })
 
 
