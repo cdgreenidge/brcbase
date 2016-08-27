@@ -1,10 +1,11 @@
-#' BrcFmri Builder
+#' \code{BrcFmri} Builder
 #' 
 #' \code{buildBrcFmri} is a helper function that quickly build a \code{BrcFmri}
 #' instance from a 4-dimensional matrix. Its main benefit is that it 
-#' constructs all of the BrcFmri object's dependencies 
-#' (a \code{BrcParcellation} and a \code{partition}) for you. 
-#' Here, data4d is a 4-dimensional matrix where the first 3 dimensions 
+#' constructs all of the \code{BrcFmri} object's dependencies 
+#' (a \code{BrcParcellation} and a \code{data2d}) for you. 
+#' Here, the input \code{data4d} is a 4-dimensional matrix where the 
+#' first 3 dimensions 
 #' refer to the x, y, z coordinates and the 4th dimension refers to time.
 #' 
 #' Along each 3-dimensional matrix indexed by time, each voxel corresponds to
@@ -50,6 +51,21 @@ buildBrcFmri <- function(data4d, id="") {
 }
 
 
+#' \code{BrcParcellation} Builder
+#' 
+#' \code{buildBrcParcellation} is a helper function that quickly build a 
+#' \code{BrcParcellation} instance from a 3-dimensional matrix. Its main 
+#' benefit is that it constructs all of the \code{BrcParcellation} 
+#' object's dependencies (\code{dim3d} and \code{partition}) for you. 
+#' 
+#' Here, the input \code{data3d} is a 3-dimensional matrix, and each
+#' unique value in \code{data3d} will be assigned a unique parcel. The value
+#' 0 in \code{data3d} will signal an empty voxel.
+#' 
+#' @param data3d a 3-dimensional matrix
+#'
+#' @return a \code{BrcParcellation} instance
+#' @export
 buildBrcParcellation <- function(data3d){
   if(!is.array(data3d)) stop("data3d must be an array")
   dim.vec <- dim(data3d)

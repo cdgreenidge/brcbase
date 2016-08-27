@@ -2,7 +2,7 @@
 % Please edit documentation in R/buildBrcFmri.R
 \name{buildBrcFmri}
 \alias{buildBrcFmri}
-\title{BrcFmri Builder}
+\title{\code{BrcFmri} Builder}
 \usage{
 buildBrcFmri(data4d, id = "")
 }
@@ -18,9 +18,10 @@ a \code{BrcFmri} instance
 \description{
 \code{buildBrcFmri} is a helper function that quickly build a \code{BrcFmri}
 instance from a 4-dimensional matrix. Its main benefit is that it 
-constructs all of the BrcFmri object's dependencies 
-(a \code{BrcParcellation} and a \code{partition}) for you. 
-Here, data4d is a 4-dimensional matrix where the first 3 dimensions 
+constructs all of the \code{BrcFmri} object's dependencies 
+(a \code{BrcParcellation} and a \code{data2d}) for you. 
+Here, the input \code{data4d} is a 4-dimensional matrix where the 
+first 3 dimensions 
 refer to the x, y, z coordinates and the 4th dimension refers to time.
 }
 \details{
