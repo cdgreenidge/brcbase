@@ -42,8 +42,11 @@ BrcFmri <- function(data2d, id, parcellation) {
     stop("parcellation argument must be of class BrcParcellation")
   }
 
-  structure(list(data2d=data2d, id=id, parcellation=parcellation),
+  obj <- structure(list(data2d=data2d, id=id, parcellation=parcellation),
             class="BrcFmri")
+  isValid(obj)
+  
+  obj
 }
 
 #' 4D fMRI dimensions
@@ -75,8 +78,7 @@ dim4d <- function(mri) {
 #' @return void
 #' @export
 isValid.BrcFmri <- function(obj) {
-  partition <- obj$parcellation$partition
-  num3dVoxels <- sum(levels(partition) > 0)
+  num3dVoxels <- numParcels(obj$parcellation)
   if (ncol(obj$data2d) != num3dVoxels) {
     stop(paste("Number of columns in data matrix does not equal number of 3D",
                "voxels specified in the parcellation. If you used the default",
@@ -84,10 +86,47 @@ isValid.BrcFmri <- function(obj) {
                "passed to buildBrcFmri()."))
 
   }
+  
   isValid(obj$parcellation)
 }
 
-#' Summarizing BrainConductor fMRIs
+#' Printing BrcFmri objects
+#' 
+#' \code{print} method for class "\code{BrcFmri}.
+#'
+#' @param x a BrcFmri instance
+#' @param ... unused
+#' @export
+print.BrcFmri <- function(x, ...){
+  cat("BrcFmri object of dimension", paste0(x$parcellation$dim3d, collapse = " x "),
+      "\n with", ncol(x$data2d), "parcels and", nrow(x$data2d), "length\n")
+  cat("----------\n\n")
+  
+  if(nrow(x$data2d) > 10 | ncol(x$data2d) > 10){
+    cat("$data2d (Abridged)\n")
+  } else {
+    cat("$data2d\n")
+  }
+  print(utils::head(x$data2d[,1:min(10,ncol(x$data2d))]))
+  
+  cat("\n$id\n")
+  print(x$id)
+  
+  cat("\n$parcellation (Object of class BrcParcellation)\n")
+  cat("$$dim3d\n")
+  print(x$parcellation$dim3d)
+  
+  if(length(x$parcellation$partition) > 10){
+    cat("\n$$partition (Abridged)\n")
+  } else {
+    cat("\n$$partition\n")
+  }
+  print(x$parcellation$partition[1:min(10, length(x$parcellation$partition))])
+ 
+  invisible() 
+}
+
+#' Summarizing BrcFmri objects
 #' 
 #' \code{summary} method for class "\code{BrcFmri}.
 #' 
@@ -95,9 +134,14 @@ isValid.BrcFmri <- function(obj) {
 #' @param ... unused
 #' @export
 summary.BrcFmri <- function(object, ...) {
+  cat("Summary of BrcFmri object\n----------\n")
   dims <- dim4d(object)
-  cat(sprintf("Id:                %s\n", object$id))
-  cat(sprintf("Volume resolution: %d x %d x %d voxels\n", dims[1], dims[2],
+  cat(sprintf("Id:                      %s\n", object$id))
+  cat(sprintf("Volume resolution:       %d x %d x %d voxels\n", dims[1], dims[2],
               dims[3]))
-  cat(sprintf("Scan length:       %d volumes\n", dims[4]))
+  cat(sprintf("Number of parcellations: %d parcels\n", ncol(object$data2d)))
+  cat(sprintf("Scan length:             %d volumes\n", dims[4]))
+  cat(sprintf("Estimate size:           %.2f Mb\n", utils::object.size(object)/1024^2,2))
+
+  invisible()
 }

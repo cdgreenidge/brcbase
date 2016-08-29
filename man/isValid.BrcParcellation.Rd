@@ -17,6 +17,6 @@ void
 }
 \details{
 Fails noisily with a stop message if the \code{BrcParcellation}
-instance is invalid. Otherwise, nothing happens.
+instance is invalid. Otherwise, returns TRUE.
 }
 
