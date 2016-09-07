@@ -29,20 +29,23 @@ test_that("it errors if there is motion detected",{
   expect_error(buildBrcFmri(mat))
 })
 
+##########################
+
 # Test .buildParcellation()
 
-test_that(".buildParcellation builds a parcellation", {
+test_that(".buildParcellation builds a singleton parcellation", {
   parcellation <- .buildParcellation(dim3d=c(2, 2, 2), idx = 1:8)
   expect_equal(class(parcellation), "BrcParcellation")
   expect_equal(parcellation$dim3d, c(2, 2, 2))
   expect_equal(parcellation$partition, 1:8)
 })
 
+########################
 
-# Test .buildPartition()
+# Test .buildPartitionSingleton()
 
-test_that(".buildPartition puts each voxel in its own cell if partition=NULL", {
-  expect_equal(.buildPartition(c(2,2,2), 1:8), 1:8)
+test_that(".buildPartitionSingleton puts each voxel in its own cell", {
+  expect_equal(.buildPartitionSingleton(c(2,2,2), 1:8), 1:8)
 })
 
 ########################

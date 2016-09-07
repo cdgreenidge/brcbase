@@ -39,16 +39,24 @@ buildBrcFmri <- function(data4d, id="") {
 }
 
 .buildParcellation <- function(dim3d, idx) {
-  partition <- .buildPartition(dim3d, idx)
+  partition <- .buildPartitionSingleton(dim3d, idx)
   BrcParcellation(dim3d, partition)
 }
 
-.buildPartition <- function(dim3d, idx) {
+.buildPartitionSingleton <- function(dim3d, idx) {
   partition <- rep(0, prod(dim3d))
   partition[idx] <- 1:length(idx)
   
   partition
 }
+
+.buildPartition <- function(dim3d, idx) {
+  partition <- rep(0, prod(dim3d))
+  partition[idx] <- dim3d[idx]
+  
+  partition
+}
+
 
 
 #' \code{BrcParcellation} Builder
