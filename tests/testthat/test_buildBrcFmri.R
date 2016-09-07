@@ -33,8 +33,8 @@ test_that("it errors if there is motion detected",{
 
 # Test .buildParcellation()
 
-test_that(".buildParcellation builds a singleton parcellation", {
-  parcellation <- .buildParcellation(dim3d=c(2, 2, 2), idx = 1:8)
+test_that(".buildSingletonParcellation builds a singleton parcellation", {
+  parcellation <- .buildSingletonParcellation(dim3d=c(2, 2, 2), idx = 1:8)
   expect_equal(class(parcellation), "BrcParcellation")
   expect_equal(parcellation$dim3d, c(2, 2, 2))
   expect_equal(parcellation$partition, 1:8)
@@ -42,10 +42,10 @@ test_that(".buildParcellation builds a singleton parcellation", {
 
 ########################
 
-# Test .buildPartitionSingleton()
+# Test .buildSingletonPartition()
 
-test_that(".buildPartitionSingleton puts each voxel in its own cell", {
-  expect_equal(.buildPartitionSingleton(c(2,2,2), 1:8), 1:8)
+test_that(".buildSingletonPartition puts each voxel in its own cell", {
+  expect_equal(.buildSingletonPartition(c(2,2,2), 1:8), 1:8)
 })
 
 ########################
@@ -70,9 +70,25 @@ test_that("it returns the correct parcellation", {
   parcellation <- buildBrcParcellation(mat)
   expect_true(class(parcellation) == "BrcParcellation")
   expect_true(all(parcellation$dim3d == 3))
+  expect_true(numParcels(parcellation) == 2)
   
   vec <- rep(0, 27)
   vec[c(1,5,10)] <- 1
   vec[c(2,27)] <- 2
-  expect_true(all(parcellation$parcellation$partition == vec))
+  expect_true(all(parcellation$partition == vec))
+})
+
+test_that("it returns correct parcellation when for rectangular parcels", {
+  mat <- array(1, rep(5,3))
+  mat[2:4,2:4,2:4] <- 2
+  mat[3,3,3] <- 3
+  
+  parcellation <- buildBrcParcellation(mat)
+  expect_true(class(parcellation) == "BrcParcellation")
+  expect_true(all(parcellation$dim3d == 5))
+  expect_true(numParcels(parcellation) == 3)
+  
+  expect_true(length(which(parcellation$partition == 1)) == 125-27)
+  expect_true(length(which(parcellation$partition == 2)) == 26)
+  expect_true(length(which(parcellation$partition == 3)) == 1)
 })

@@ -29,7 +29,7 @@ buildBrcFmri <- function(data4d, id="") {
     "See ?checkMotion for more details."))
   
   idx <- which(data4d[,,,1] != 0)
-  parcellation <- .buildParcellation(dim.vec[1:3], idx)
+  parcellation <- .buildSingletonParcellation(dim.vec[1:3], idx)
   data2d <- data4dTo2d(data4d)[,idx]
   
   mri <- BrcFmri(data2d=data2d, id=id, parcellation=parcellation)
@@ -37,27 +37,6 @@ buildBrcFmri <- function(data4d, id="") {
   isValid(mri)
   mri
 }
-
-.buildParcellation <- function(dim3d, idx) {
-  partition <- .buildPartitionSingleton(dim3d, idx)
-  BrcParcellation(dim3d, partition)
-}
-
-.buildPartitionSingleton <- function(dim3d, idx) {
-  partition <- rep(0, prod(dim3d))
-  partition[idx] <- 1:length(idx)
-  
-  partition
-}
-
-.buildPartition <- function(dim3d, idx) {
-  partition <- rep(0, prod(dim3d))
-  partition[idx] <- dim3d[idx]
-  
-  partition
-}
-
-
 
 #' \code{BrcParcellation} Builder
 #' 
@@ -80,5 +59,30 @@ buildBrcParcellation <- function(data3d){
   if(length(dim.vec) != 3) stop("data3d must have 4 dimensions")
   
   idx <- which(data3d != 0)
-  .buildParcellation(dim.vec, idx)
+  .buildParcellation(dim.vec, idx, data3d)
+}
+
+
+.buildSingletonParcellation <- function(dim3d, idx) {
+  partition <- .buildSingletonPartition(dim3d, idx)
+  BrcParcellation(dim3d, partition)
+}
+
+.buildSingletonPartition <- function(dim3d, idx) {
+  partition <- rep(0, prod(dim3d))
+  partition[idx] <- 1:length(idx)
+  
+  partition
+}
+
+.buildParcellation <- function(dim3d, idx, data3d){
+  partition <- .buildPartition(dim3d, idx, data3d)
+  BrcParcellation(dim3d, partition)
+}
+
+.buildPartition <- function(dim3d, idx, data3d) {
+  partition <- rep(0, prod(dim3d))
+  partition[idx] <- data3d[idx]
+  
+  partition
 }
