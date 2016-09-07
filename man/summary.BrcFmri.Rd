@@ -2,7 +2,7 @@
 % Please edit documentation in R/BrcFmri.R
 \name{summary.BrcFmri}
 \alias{summary.BrcFmri}
-\title{Summarizing BrainConductor fMRIs}
+\title{Summarizing BrcFmri objects}
 \usage{
 \method{summary}{BrcFmri}(object, ...)
 }
