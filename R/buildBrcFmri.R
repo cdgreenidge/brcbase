@@ -82,7 +82,14 @@ buildBrcParcellation <- function(data3d){
 
 .buildPartition <- function(dim3d, idx, data3d) {
   partition <- rep(0, prod(dim3d))
-  partition[idx] <- data3d[idx]
+  
+  #the following syntax is taken from plyr::mapvalues. Thanks!
+  vec <- as.numeric(data3d)
+  uniq.parcel <- sort(unique(vec))
+  if(any(uniq.parcel == 0)) uniq.parcel <- uniq.parcel[uniq.parcel != 0]
+  
+  matching <- match(vec, uniq.parcel)
+  partition[idx] <- c(1:length(uniq.parcel))[matching[idx]]
   
   partition
 }

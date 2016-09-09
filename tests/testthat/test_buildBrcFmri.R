@@ -92,3 +92,20 @@ test_that("it returns correct parcellation when for rectangular parcels", {
   expect_true(length(which(parcellation$partition == 2)) == 26)
   expect_true(length(which(parcellation$partition == 3)) == 1)
 })
+
+
+test_that("input data3d can have non-consecutive integers", {
+  mat <- array(1, rep(5,3))
+  mat[2:4,2:4,2:4] <- 5
+  mat[3,3,3] <- 10
+  
+  parcellation <- buildBrcParcellation(mat)
+  expect_true(class(parcellation) == "BrcParcellation")
+  expect_true(all(parcellation$dim3d == 5))
+  expect_true(numParcels(parcellation) == 3)
+  
+  expect_true(length(which(parcellation$partition == 1)) == 125-27)
+  expect_true(length(which(parcellation$partition == 2)) == 26)
+  expect_true(length(which(parcellation$partition == 3)) == 1)
+})
+
