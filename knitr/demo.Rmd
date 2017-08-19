@@ -23,6 +23,8 @@ devtools::install_github("linnylin92/brcdata", ref = "kevin")
 
 ## Basics of \texttt{brcbase}
 
+### The \texttt{BrcFmri} class, through a functional MRI
+
 Let us investigate first \texttt{COBRE\_0040071\_funcSeg}, the functional MRI scan
 of subject 0040071 in the COBRE repository. We can look up more information on this
 dataset using \texttt{?COBRE\_0040071\_funcSeg}
@@ -41,7 +43,40 @@ class. These are \texttt{data2d}, \texttt{id}, and \texttt{parcellation}.
 names(dat)
 ```
 
-The first component is \texttt{data2d}. In our case, this is a $5 \times 82470$ matrix,
+Let's first start with the last component, \texttt{parcellation}. 
+```{r}
+dat$parcellation
+length(dat$parcellation$partition)
+```
+We see that it has two elements, \texttt{dim3d} and \texttt{partition}. 
+Here, \texttt{dim3d} represents the size of the fMRI scan, which is
+$61 \times 73 \times 61$ voxels in our case. Next, \texttt{partition} is a vector of 
+length $271633$ (which is equal to $61*73*61$), one element for each voxel.
+Each element in this vector corresponds to a specific voxel (which is not made
+explicit to the user), and the values of each element corresponds to which
+parcel the corresponding voxel belongs in. Elements with $0$ are have 
+a special meaning to denote
+that its corresponding voxel are empty (i.e., there is no time-series information
+for these voxels). For example, these empty voxels could represent voxels outside the
+skull.
+
+In our case, we see that there are
+82470 unique parcellations (excluding the voxels with the $0$ value). We also
+see that each parcel has only one voxel each. This means that this is the
+singleton parcellation. In the later sections, we will discuss how to incorporate
+parcellations where each parcel contains many voxels.
+```{r}
+length(unique(dat$parcellation$partition))
+table(table(dat$parcellation$partition))
+```
+
+The next component we will discuss is \texttt{data2d}. 
+In our case, this is a $5 \times 82470$ matrix,
 where each column represents a different time index and each row represents a different 
-voxel. We call this the ``2d'' representation since it ignores spatial
+voxel. (Recall that there were 82470 parcels based on \texttt{parcellation}.)
+We call this the ``2d'' representation since it ignores spatial
 information, as it is unclear a priori which voxels neighbor which voxels.
+
+The last component is \texttt{id}, which allows the researcher (you) to
+add some unique identifier to this fMRI data. This will have utility later on
+when we link fMRI data to phenotype data.
