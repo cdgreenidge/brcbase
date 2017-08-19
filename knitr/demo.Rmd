@@ -1,0 +1,47 @@
+---
+title: "Brainconductor demo"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Setting up
+
+We first install the relevant packages, \texttt{brcbase} (which contains
+the core code needed for this demo) and \texttt{brcdata} (which contains the
+example datasets).
+
+```{r, cache = T}
+library(devtools)
+devtools::install_github("cdgreenidge/brcbase", ref = "kevin", subdir = "brcbase")
+devtools::install_github("linnylin92/brcdata", ref = "kevin")
+```
+
+## Basics of \texttt{brcbase}
+
+Let us investigate first \texttt{COBRE\_0040071\_funcSeg}, the functional MRI scan
+of subject 0040071 in the COBRE repository. We can look up more information on this
+dataset using \texttt{?COBRE\_0040071\_funcSeg}
+
+```{r}
+library(brcbase)
+library(brcdata)
+dat <- brcdata::COBRE_0040071_funcSeg
+class(dat)
+dat
+```
+
+We see some distinctive components of \texttt{dat}, an object of the \texttt{BrcFmri}
+class. These are \texttt{data2d}, \texttt{id}, and \texttt{parcellation}. 
+```{r}
+names(dat)
+```
+
+The first component is \texttt{data2d}. In our case, this is a $5 \times 82470$ matrix,
+where each column represents a different time index and each row represents a different 
+voxel. We call this the ``2d'' representation since it ignores spatial
+information, as it is unclear a priori which voxels neighbor which voxels.
