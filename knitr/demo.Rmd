@@ -27,7 +27,7 @@ devtools::install_github("linnylin92/brcdata", ref = "kevin")
 
 Let us investigate first \texttt{COBRE\_0040071\_funcSeg}, the functional MRI scan
 of subject 0040071 in the COBRE repository. We can look up more information on this
-dataset using \texttt{?COBRE\_0040071\_funcSeg}
+dataset using \texttt{?COBRE\_0040071\_funcSeg}.
 
 ```{r}
 library(brcbase)
@@ -40,7 +40,8 @@ summary(dat)
 We see that from the summary that \texttt{dat} represents an fMRI that has
 dimension $61 \times 73 \times 61$, has $82470$ parcels in its parcellation, and
 has a scan length of $5$, meaning there are $5$ time indices. Let's dig into how this
-data is stored.
+data is stored. We have coded an \texttt{print} function for the \texttt{BrcFmri}
+class to give you an overview of the contents of \texttt{dat}.
 
 ```{r}
 dat
@@ -120,6 +121,78 @@ In each of the 5 time intervals, there are 82470 non-zero voxels, which is
 what we expected.
 
 ### Applying a parcellation
+
+Suppose we wanted to apply a (non-trivial) parcellation to \texttt{dat}.
+That is, we wanted to reduce the dimensionality of data from 82470 dimensions
+(one dimension for each voxel, since each voxel represents a different time series)
+to a substantially smaller dimensionality. To do this, we will need a
+parcellation encoded by the \texttt{BrcParcellation} class. We have
+an example of one in the \texttt{brcData} package.
+
+```{r}
+aal <- brcdata::AAL_3mm
+summary(aal)
+class(aal)
+aal
+```
+
+This is the AAL (Automated Anatomical Labeling) parcellation for 3 millimeter voxels.
+More information on this parcellation can be found with the \texttt{?AAL\_3mm} command.
+Notice that \texttt{aal} has the same dimension (based on \texttt{aal\$dim3d}) as
+\texttt{dat}. This is important, as we will not be able to apply the \texttt{aal}
+parcellation onto \texttt{dat} if their 3d dimensions differed. Unsurprisingly, we
+see that the representation of \texttt{aal} is similar to that of \texttt{dat\$parcellation}
+as both are objects of the \texttt{BrcParcellation} class.
+
+However, we now will show that unlike \texttt{dat\$parcellation}, \texttt{aal} does
+not include singleton parcels. To do this, we plot how many voxels are in each parcel,
+sorted from fewest to most. We exclude the ``$0$'' parcel (again, which represents empty space).
+```{r}
+vec <- aal$partition[aal$partition != 0]
+length(unique(vec))
+quantile(table(vec))
+plot(as.numeric(sort(table(vec))), xlab = "Parcel index", ylab = "Parcel size", 
+     pch = 16, cex = 2)
+```
+
+We see that more than half the parcels contain more than 400 voxels, and there are
+90 parcels total (again, excluding the ``$0$'' parcel).
+
+Now we want to apply \texttt{aal} to \texttt{dat}, returning a new dataset
+where there are only 90 dimensions (i.e., 90 time series) instead of 82470 dimensions.
+
+```{r}
+dat_aal <- reduce(dat, aal, func = reduce_mean)
+summary(dat_aal)
+dim(dat_aal$data2d)
+```
+
+We see that there are only 90 parcels in our new dataset, \texttt{dat\_aal},
+and the 2d representation of \texttt{dat\_aal} is now a $5 \times 90$ matrix.
+We used a function called \texttt{reduce\_mean} to summarize the time series
+of all the voxels in the same parcellation (according to \texttt{aal}) into
+one time series using the mean. There are other functions we could have used
+such as \texttt{reduce\_pca}. We encourage the reader to read about these 
+functions using the commands \texttt{?reduce}, \texttt{?reduce\_mean}, and \texttt{?reduce\_pca}.
+
+If we count how many voxels are included in our new dataset \texttt{dat\_aal}, 
+we will notice something.
+```{r}
+length(which(dat_aal$parcellation$partition != 0))
+length(which(dat$parcellation$partition != 0))
+```
+
+This means only 47636 voxels are accounted for in \texttt{dat\_aal}, down from
+the original number of 82470 voxels in \texttt{dat}. (Remember, the number of 
+parcels in \texttt{dat} is equal to the number of voxels since \texttt{dat\$parcellation}
+is the singleton parcellation.) This is because not all the
+voxels represented in the \texttt{dat\_aal} parcellation are represented in the 
+\texttt{dat\$parcellation} parcellation, and vice-versa. In neuroscience analyses,
+this can thought of as a region-ofinterest (RoI) analysis, as not every voxel is 
+scientifically interesting to study. If the researcher wanted to ``fill'' the 
+\texttt{aal} parcellation so as many of the original 82470 original voxels are
+accounted for in the new, reduced dataset, we discuss functions to achieve this
+in later sections.
 
 ### Building a \texttt{BrcFmri} object
 
