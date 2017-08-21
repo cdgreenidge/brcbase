@@ -186,7 +186,7 @@ This means only 47636 voxels are accounted for in \texttt{dat\_aal}, down from
 the original number of 82470 voxels in \texttt{dat}. (Remember, the number of 
 parcels in \texttt{dat} is equal to the number of voxels since \texttt{dat\$parcellation}
 is the singleton parcellation.) This is because not all the
-voxels represented in the \texttt{dat\_aal} parcellation are represented in the 
+voxels represented in the \texttt{dat\_aal}  parcellation are represented in the 
 \texttt{dat\$parcellation} parcellation, and vice-versa. In neuroscience analyses,
 this can thought of as a region-ofinterest (RoI) analysis, as not every voxel is 
 scientifically interesting to study. If the researcher wanted to ``fill'' the 
