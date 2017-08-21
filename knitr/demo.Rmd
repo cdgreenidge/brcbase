@@ -34,8 +34,18 @@ library(brcbase)
 library(brcdata)
 dat <- brcdata::COBRE_0040071_funcSeg
 class(dat)
+summary(dat)
+```
+
+We see that from the summary that \texttt{dat} represents an fMRI that has
+dimension $61 \times 73 \times 61$, has $82470$ parcels in its parcellation, and
+has a scan length of $5$, meaning there are $5$ time indices. Let's dig into how this
+data is stored.
+
+```{r}
 dat
 ```
+
 
 We see some distinctive components of \texttt{dat}, an object of the \texttt{BrcFmri}
 class. These are \texttt{data2d}, \texttt{id}, and \texttt{parcellation}. 
@@ -43,9 +53,11 @@ class. These are \texttt{data2d}, \texttt{id}, and \texttt{parcellation}.
 names(dat)
 ```
 
-Let's first start with the last component, \texttt{parcellation}. 
+Let's first start with the last component, \texttt{parcellation}. It is an object
+of class \texttt{BrcParcellation}.
 ```{r}
 dat$parcellation
+class(dat$parcellation)
 length(dat$parcellation$partition)
 ```
 We see that it has two elements, \texttt{dim3d} and \texttt{partition}. 
@@ -80,3 +92,41 @@ information, as it is unclear a priori which voxels neighbor which voxels.
 The last component is \texttt{id}, which allows the researcher (you) to
 add some unique identifier to this fMRI data. This will have utility later on
 when we link fMRI data to phenotype data.
+
+### Manipulating the data representation
+
+Our data \texttt{dat} was in the 2d representation. We discuss how to make it
+transform it into the ``4d'' representation, which will explicitly encode 
+which voxels are spatially adjacent to which voxels.
+```{r}
+dat4d <- data2dTo4d(dat$data2d, dat$parcellation)
+dim(dat4d)
+class(dat4d)
+```
+
+We see that \texttt{dat4d} is an \texttt{array} object with dimensions
+$61 \times 73 \times 61 \times 5$, exactly what we would've expected had we worked
+with a \texttt{nifti} object (using previously established NifTI standards).
+Here, the first three dimensions represent the $(x,y,z)$ spatial coordinates,
+so we can easily discern which voxels are spatially adjacent to which voxels.
+The last dimension encode the time series. 
+
+We can do a simple checks to ensure our understanding. First, we can
+count how many non-zero voxels there are in any of the 5 time intervals.
+```{r}
+apply(dat4d, 4, function(x){length(which(x != 0))})
+```
+In each of the 5 time intervals, there are 82470 non-zero voxels, which is
+what we expected.
+
+### Applying a parcellation
+
+### Building a \texttt{BrcFmri} object
+
+## Visualization
+
+## Statistics
+
+## Example custom packages: Parcellation
+
+## Summary
