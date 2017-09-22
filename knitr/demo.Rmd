@@ -297,4 +297,23 @@ brcFmri object?}
 
 ## Example custom packages: Parcellation
 
+The Brainconductor suite organizes objects such that it is easy to extend the
+functionality of existing objects. We demonstrate this using the \texttt{brcparcellation}
+parcellation, which provides many functions that manipulate parcellations and
+calculate various properties. 
+
+```{r, cache = T}
+library(devtools)
+devtools::install_github("linnylin92/brcparcellation", ref = "kevin")
+library(brcparcellation)
+```
+
+Let's look at the AAL parcellation that we used earlier. Using the \texttt{brcparcellation} package, we can compute the surface area of a specific parcel.
+
+```{r}
+aal <- brcdata::AAL_3mm
+brcparcellation::surfaceArea(aal, parcel = 1)
+```
+
+
 ## Summary
